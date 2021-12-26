@@ -14,7 +14,7 @@ public class Main {
 //        getSpiderBiqugePage();
         Date date = new Date();
         long timeStart = date.getTime();
-        String searchContext = "肉文";
+        String searchContext = "校花";
         ArrayList<HashMap<String,String>> bookList = SearchBook.searchBookEvent(searchContext);
         System.out.println(bookList);
         System.out.println(bookList.size());
