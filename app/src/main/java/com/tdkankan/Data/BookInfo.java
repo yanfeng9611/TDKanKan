@@ -8,37 +8,43 @@ package com.tdkankan.Data;
  * 不会停止运行的app不是好app w(ﾟДﾟ)w
  */
 public class BookInfo {
-    String name;    //书名
+    String bookName;    //书名
     String author;  //作者
-    String link;    //书链接
-    String picname; //封面名字
-    String piclink; //封面链接
-    String info;    //简介
-    String lasttime;    //最后更新时间
-    String newchapter;  //最新章节
-    String newchapterlink;  //最新章节链接
-    int chapternum; //总章节
-    String linkfrom;    //书源
+    String bookLink;    //书链接
+    String picLink; //封面链接
+    String bookIntroduction;    //简介
+    String lastTime;    //最后更新时间
+    String newChapter;  //最新章节
+    String newChapterLink;  //最新章节链接
+    int chapterNum; //总章节
+    String linkFrom;    //书源
+    String status;
+    String category;
 
-    public BookInfo(String name, String author, String link, String picname, String piclink, String info, String lasttime, String newchapter, String newchapterlink, int chapternum) {
-        this.name = name;
+    public BookInfo(String bookName, String author, String bookLink,
+                    String picLink, String bookIntroduction,
+                    String lastTime, String newChapter, String newChapterLink,
+                    int chapterNum, String status, String category, String linkFrom) {
+        this.bookName = bookName;
         this.author = author;
-        this.link = link;
-        this.picname = picname;
-        this.piclink = piclink;
-        this.info = info;
-        this.lasttime = lasttime;
-        this.newchapter = newchapter;
-        this.newchapterlink = newchapterlink;
-        this.chapternum = chapternum;
+        this.bookLink = bookLink;
+        this.picLink = picLink;
+        this.bookIntroduction = bookIntroduction;
+        this.lastTime = lastTime;
+        this.newChapter = newChapter;
+        this.newChapterLink = newChapterLink;
+        this.chapterNum = chapterNum;
+        this.status = status;
+        this.category = category;
+        this.linkFrom = linkFrom;
     }
 
-    public String getName() {
-        return name;
+    public String getBookName() {
+        return bookName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setBookName(String bookName) {
+        this.bookName = bookName;
     }
 
     public String getAuthor() {
@@ -49,67 +55,83 @@ public class BookInfo {
         this.author = author;
     }
 
-    public String getLink() {
-        return link;
+    public String getBookLink() {
+        return bookLink;
     }
 
-    public void setLink(String link) {
-        this.link = link;
+    public void setBookLink(String bookLink) {
+        this.bookLink = bookLink;
     }
 
-    public String getPicname() {
-        return picname;
+    public String getPicLink() {
+        return picLink;
     }
 
-    public void setPicname(String picname) {
-        this.picname = picname;
+    public void setPicLink(String picLink) {
+        this.picLink = picLink;
     }
 
-    public String getPiclink() {
-        return piclink;
+    public String getBookIntroduction() {
+        return bookIntroduction;
     }
 
-    public void setPiclink(String piclink) {
-        this.piclink = piclink;
+    public void setBookIntroduction(String bookIntroduction) {
+        this.bookIntroduction = bookIntroduction;
     }
 
-    public String getInfo() {
-        return info;
+    public String getLastTime() {
+        return lastTime;
     }
 
-    public void setInfo(String info) {
-        this.info = info;
+    public void setLastTime(String lastTime) {
+        this.lastTime = lastTime;
     }
 
-    public String getLasttime() {
-        return lasttime;
+    public String getNewChapter() {
+        return newChapter;
     }
 
-    public void setLasttime(String lasttime) {
-        this.lasttime = lasttime;
+    public void setNewChapter(String newChapter) {
+        this.newChapter = newChapter;
     }
 
-    public String getNewchapter() {
-        return newchapter;
+    public String getNewChapterLink() {
+        return newChapterLink;
     }
 
-    public void setNewchapter(String newchapter) {
-        this.newchapter = newchapter;
+    public void setNewChapterLink(String newChapterLink) {
+        this.newChapterLink = newChapterLink;
     }
 
-    public int getChapternum() {
-        return chapternum;
+    public int getChapterNum() {
+        return chapterNum;
     }
 
-    public void setChapternum(int chapternum) {
-        this.chapternum = chapternum;
+    public void setChapterNum(int chapterNum) {
+        this.chapterNum = chapterNum;
     }
 
-    public String getNewchapterlink() {
-        return newchapterlink;
+    public String getLinkFrom() {
+        return linkFrom;
     }
 
-    public void setNewchapterlink(String newchapterlink) {
-        this.newchapterlink = newchapterlink;
+    public void setLinkFrom(String linkFrom) {
+        this.linkFrom = linkFrom;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

@@ -43,15 +43,17 @@ public class BookInfoDetailActivity extends AppCompatActivity {
     ImageView img_pic;
     Button btn_add;
     Button btn_read;
-    String title;   //书名
-    String info;    //简介
+    String bookName;    //书名
     String author;  //作者
-    String picname; //封面id或书本id，例如6_506
-    String piclink; //封面链接
-    String link;    //书籍简链接，例如/6_506/
-    String newchapter;  //最新章节名
-    String lasttime;    //最后更新时间
-    int chapternum; //总章节
+    String bookLink;    //书链接
+    String picName; //封面名字
+    String picLink; //封面链接
+    String bookIntroduction;    //简介
+    String lastTime;    //最后更新时间
+    String newChapter;  //最新章节
+    String newChapterLink;  //最新章节链接
+    int chapterNum; //总章节
+    String linkFrom;    //书源
     BookInfo bookInfo;
     LoadingDialog loadingDialog;
     DaoHelper mDb;
@@ -71,8 +73,8 @@ public class BookInfoDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(BookInfoDetailActivity.this, ReadingActivity.class);
-                intent.putExtra("link", link);
-                intent.putExtra("chapternum",chapternum);
+                intent.putExtra("bookLink", bookLink);
+//                intent.putExtra("chapterNum",chapterNum);
                 startActivity(intent);
             }
         });
@@ -95,17 +97,19 @@ public class BookInfoDetailActivity extends AppCompatActivity {
 //                String name=BookInfoCache.loadBook(link).getName();
                 if(btn_add.getText().toString().equals("加入书架"))
                 {//加入书架
-                    Bookinfodb book=new Bookinfodb(null,title,author,link,piclink,info,lasttime,newchapter,"",chapternum,"biquge");
+                    Bookinfodb book=new Bookinfodb(null, bookName, author,
+                            bookLink, picLink, bookIntroduction, lastTime, newChapter,
+                            "",chapterNum,"biquge");
                     mDb.insertOrReplace(book);
-                    if(mDb.search(link)!=null)
+                    if(mDb.search(bookLink)!=null)
                     {
                         Toast.makeText(BookInfoDetailActivity.this,"添加成功",Toast.LENGTH_SHORT).show();
                         btn_add.setText("移出书架");
                     }
                 }else if(btn_add.getText().toString().equals("移出书架"))
                 {//移出书架
-                    mDb.delete(mDb.search(link).getBookid());
-                    if(mDb.search(link)==null)
+                    mDb.delete(mDb.search(bookLink).getBookid());
+                    if(mDb.search(bookLink)==null)
                     {
                         btn_add.setText("加入书架");
                     }
@@ -117,18 +121,22 @@ public class BookInfoDetailActivity extends AppCompatActivity {
     private  void GetData()
     {
         Intent intent = getIntent();
-        title = intent.getStringExtra("name");
-        info = intent.getStringExtra("info");
-        link = intent.getStringExtra("link");
+        bookName = intent.getStringExtra("bookName");
+        bookIntroduction = intent.getStringExtra("bookIntroduction");
+        bookLink = intent.getStringExtra("bookLink");
         author = intent.getStringExtra("author");
-        picname = intent.getStringExtra("picname");
-        piclink = intent.getStringExtra("piclink");
-        piclink = GlobalConfig.PicLinkCheck(piclink);
-        preInitBookInfo(picname);
-        newchapter = bookInfo.getNewchapter();
-        lasttime = bookInfo.getLasttime();
-        chapternum=bookInfo.getChapternum();
-        if(mDb.search(link)!=null)
+        picName = intent.getStringExtra("picName");
+        picLink = intent.getStringExtra("picLink");
+        newChapter = intent.getStringExtra("newChapter");
+//        lastTime = intent.getStringExtra("lastTime");
+//        chapterNum = Integer.parseInt(intent.getStringExtra("chapterNum"));
+
+//        piclink = GlobalConfig.PicLinkCheck(piclink);
+//        preInitBookInfo(picName);
+//        newChapter = bookInfo.getNewChapter();
+//        lastTime = bookInfo.getLastTime();
+//        chapterNum=bookInfo.getChapterNum();
+        if(mDb.search(bookLink)!=null)
         {
             btn_add.setText("移出书架");
         }
@@ -137,13 +145,13 @@ public class BookInfoDetailActivity extends AppCompatActivity {
 
 //        Bitmap bitmap= BookInfoCache.loadImage(picname,piclink);
 
-        tv_title.setText(title);
-        tv_name.setText(title);
-        tv_info.setText(info);
+        tv_title.setText(bookName);
+        tv_name.setText(bookName);
+        tv_info.setText(bookIntroduction);
         tv_author.setText(author);
 //        img_pic.setImageBitmap(bitmap);
-        tv_lasttime.setText(lasttime);
-        tv_newchapter.setText(newchapter);
+        tv_lasttime.setText(lastTime);
+        tv_newchapter.setText(newChapter);
     }
 
     private void findId() {
@@ -188,7 +196,7 @@ public class BookInfoDetailActivity extends AppCompatActivity {
             super.onPostExecute(aBoolean);
             loadingDialog.dismiss();
             initView();
-            ImageCacheManager.loadImage(piclink, img_pic, getBitmapFromRes(R.drawable.nonepic), getBitmapFromRes(R.drawable.nonepic));
+            ImageCacheManager.loadImage(picLink, img_pic, getBitmapFromRes(R.drawable.nonepic), getBitmapFromRes(R.drawable.nonepic));
         }
     }
 }

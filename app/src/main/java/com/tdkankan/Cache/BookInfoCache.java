@@ -10,6 +10,8 @@ import com.tdkankan.Data.BookInfo;
 import com.tdkankan.Data.GlobalConfig;
 import com.tdkankan.Data.Picture;
 import com.tdkankan.Reptile.GetBook;
+import com.tdkankan.SearchBook.biquge;
+import com.tdkankan.contains.url;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,46 +29,45 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class BookInfoCache extends HashMap {
     private static ConcurrentHashMap<String, Bitmap> imageMap = new ConcurrentHashMap<>();
-    public static Bitmap loadImage(final String url, String dlink) {
-        if (imageMap.containsKey(url)) {
-            Log.d("picCacheGet", "图片缓存已存在:" + url);
-            return imageMap.get(url);
+    public static Bitmap loadImage(String picLink) {
+        if (imageMap.containsKey(picLink)) {
+            Log.d("picCacheGet", "图片缓存已存在:" + picLink);
+            return imageMap.get(picLink);
         } else {
-            Log.d("picCacheGet", "图片缓存不存在：" + url);
-            initPicture(url,dlink);
-            return imageMap.get(url);
+//            Log.d("picCacheGet", "图片缓存不存在：" + picLink);
+            initPicture(picLink);
+            return imageMap.get(picLink);
         }
     }
 
-    private static void initPicture(String url, String dlink) {
+    private static void initPicture(String picLink) {
         try {
             //通过传入的图片地址，获取图片
-            HttpURLConnection connection = (HttpURLConnection) (new URL("http:" + dlink).openConnection());
+            HttpURLConnection connection = (HttpURLConnection) (new URL(picLink).openConnection());
             InputStream is = connection.getInputStream();
             Bitmap bitmap = BitmapFactory.decodeStream(is);
-//            if (bitmap.getByteCount() != 0) {
-                if (bitmap!=null) {
+            if (bitmap != null) {
                 Log.d("pic", "图片获取成功");
                 bitmap = BitmapUtils.compressImage(bitmap);//图片压缩
-//                Picture picture2 = new Picture(url, bitmap);
-                imageMap.put(url, bitmap);
+                imageMap.put(picLink, bitmap);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
 
-    public static BookInfo loadBook(String id) {
-        if (GlobalConfig.bookmap.containsKey(id)) {
-            BookInfo book = GlobalConfig.bookmap.get(id);
-            Log.d("bookCacheGet", "图书缓存已存在:" + id);
+    public static BookInfo loadBook(String bookLink) {
+        if (GlobalConfig.bookmap.containsKey(bookLink)) {
+            BookInfo book = GlobalConfig.bookmap.get(bookLink);
+            Log.d("bookCacheGet", "图书缓存已存在:" + bookLink);
             return book;
         } else {
-            Log.d("bookCacheGet", "图书缓存不存在:" + id);
-            BookInfo book2 = GetBook.GetBookInfo(id);//爬虫爬取书本信息
+            Log.d("bookCacheGet", "图书缓存不存在:" + bookLink);
+//            BookInfo book2 = GetBook.GetBookInfo(id);//爬虫爬取书本信息
 //            BookInfo book2 = new BookInfo(id, bookInfo);
-            GlobalConfig.bookmap.put(id, book2);//书本信息存入hashmap缓存
-            return book2;
+//            GlobalConfig.bookmap.put(id, book2);//书本信息存入hashmap缓存
+//            return book2;
+            return null;
         }
     }
 

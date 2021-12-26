@@ -13,9 +13,11 @@ import com.tdkankan.greendao.model.Bookinfodb;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,7 +34,8 @@ public class GlobalConfig {
 //    public static Map<String,Picture> map=new HashMap<String,Picture>();
 //    public static ConcurrentHashMap<String,Picture> map=new ConcurrentHashMap<String,Picture>();
 //    public static Map<String,Book> bookmap=new HashMap<String,Book>();
-    public static Map<String,BookInfo> bookmap=new ConcurrentHashMap<String,BookInfo>();
+    public static Map<String,BookInfo> bookmap = new ConcurrentHashMap<String,BookInfo>();
+    public static CopyOnWriteArrayList<ArrayList<String>> proxyCacheList = new CopyOnWriteArrayList<ArrayList<String>>();
     public static ConcurrentHashMap<Integer,String> contentMap=new ConcurrentHashMap();//页对应的内容
     public static int measuredWidth=0;//控件列宽度
     public static int measuredHeigtt=0;//控件高度
@@ -47,8 +50,12 @@ public class GlobalConfig {
     public static String BookUrl="";//书籍链接
     public static int chapternum=0; //书籍总章节
     public static Bitmap bitmapnull=null;
+    public static final int threadPoolTimeOut = 100;  // 秒
+    public static final int jsoupTimeOut = 50000;  // 毫秒
+    public static final int threadPoolRandomSleep = 4000;  // 毫秒
     //    public static int sysLight=0;//系统亮度
     public static ArrayList<ConcurrentHashMap<String, String>> list =new ArrayList<ConcurrentHashMap<String, String>>();
+
 //    public static Map<String,BookChapter> bookchapter=new HashMap<String,BookChapter>();
     public static List<Bookinfodb> booklist;
 

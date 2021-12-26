@@ -27,7 +27,7 @@ public class SearchActivity extends AppCompatActivity {
     EditText editText;
     TextView textView;
     TextView tv_dearch_hinit;
-    String stringtmp;
+    String searchContent;
     LoadingDialog loadingDialog;
     SearchListAdapter adapter;
     @Override
@@ -44,7 +44,7 @@ public class SearchActivity extends AppCompatActivity {
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stringtmp=editText.getText().toString();
+                searchContent=editText.getText().toString();
                 new SearchTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         });
@@ -62,7 +62,8 @@ public class SearchActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... voids) {
-            list= SearchBook.SearchBookEvent(stringtmp);
+//            list= SearchBook.SearchBookEvent(searchContent);
+            list= SearchBook.searchBookEvent(searchContent);
             adapter = new SearchListAdapter(list,SearchActivity.this);
             return true;
         }

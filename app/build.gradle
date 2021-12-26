@@ -9,6 +9,7 @@ def buildTime() {
     return formattedDate
 }
 android {
+    useLibrary  'org.apache.http.legacy'
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
     defaultConfig {
@@ -26,17 +27,10 @@ android {
         }
     }
     applicationVariants.all { variant ->
-        variant.outputs.all { output ->
-            def outputFile = output.outputFile
-            if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                if (buildType.name.toLowerCase().contains("release")) {
-                    def fileName = "../../../apk/TDkankan_${defaultConfig.versionName}_DATE-${buildTime()}.apk"
-                    outputFileName = fileName
-                } else {
-                    def fileName = "TDkankan_${defaultConfig.versionName}-debug.apk"
-                    outputFileName = fileName
-                }
-            }
+        variant.outputs.each { output ->
+            variant.packageApplicationProvider.get().outputDirectory = new File(project.rootDir.absolutePath + "/apk")
+            def fileName = "app-v${defaultConfig.versionName}-release.apk"
+            output.outputFileName = fileName
         }
     }
 }
@@ -60,4 +54,8 @@ dependencies {
     implementation 'com.github.HanHuoBin:BaseDialog:1.2.0'
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'org.greenrobot:greendao:3.3.0' // add library
+
+//    implementation 'com.squareup.okhttp3:okhttp:4.2.2'
+//    implementation 'org.apache.httpcomponents:httpcore:4.4.1'
+//    implementation 'org.apache.httpcomponents:httpclient:4.5'
 }

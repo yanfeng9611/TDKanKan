@@ -29,13 +29,11 @@ public class GetAndRead {
     public GetAndRead(Context mContext) {
         this.mContext = mContext;
     }
-    public static ArrayList getChapter(String url, int chapternum)
-    {
+    public static ArrayList getChapter(String url, int chapternum) {
         Document alldoc;
 //        ArrayList<HashMap<String, String>> list ;
 //        list=new ArrayList<HashMap<String, String>>();
-        try
-        {
+        try {
             alldoc = Jsoup.connect(url).data("query", "Java").
                     userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.108 Safari/537.36")
                     .timeout(5000).get();

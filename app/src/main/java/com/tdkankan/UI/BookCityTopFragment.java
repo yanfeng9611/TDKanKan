@@ -63,7 +63,7 @@ public class BookCityTopFragment extends Fragment {
         @Override
         protected Boolean doInBackground(Void... voids) {
             try {
-                    list=GetBook.fengtui();
+                    list = GetBook.fengtui();
             }catch (Exception e)
             {
                 e.printStackTrace();
