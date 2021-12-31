@@ -22,9 +22,9 @@ public class BookInfo {
     String category;
 
     public BookInfo(String bookName, String author, String bookLink,
-                    String picLink, String bookIntroduction,
-                    String lastTime, String newChapter, String newChapterLink,
-                    int chapterNum, String status, String category, String linkFrom) {
+                    String picLink, String bookIntroduction, String lastTime,
+                    String newChapter, String newChapterLink, int chapterNum,
+                    String linkFrom, String status, String category) {
         this.bookName = bookName;
         this.author = author;
         this.bookLink = bookLink;
@@ -34,9 +34,9 @@ public class BookInfo {
         this.newChapter = newChapter;
         this.newChapterLink = newChapterLink;
         this.chapterNum = chapterNum;
+        this.linkFrom = linkFrom;
         this.status = status;
         this.category = category;
-        this.linkFrom = linkFrom;
     }
 
     public String getBookName() {
@@ -133,5 +133,23 @@ public class BookInfo {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    @Override
+    public String toString() {
+        return "BookInfo{" +
+                "bookName=" + bookName +
+                ", author=" + author +
+                ", bookLink=" + bookLink +
+                ", picLink=" + picLink +
+                ", bookIntroduction=" + bookIntroduction +
+                ", lastTime=" + lastTime +
+                ", newChapter=" + newChapter +
+                ", newChapterLink=" + newChapterLink +
+                ", chapterNum=" + chapterNum +
+                ", linkFrom=" + linkFrom +
+                ", status=" + status +
+                ", category=" + category +
+                '}';
     }
 }

@@ -42,7 +42,7 @@ public class GetBook {
                     book = getBookFromCache(bookLink);
                 } else {
                     biquge biquge = new biquge();
-                    book = biquge.spiderBookInfo(listItem, url.biqugeURL);
+//                    book = biquge.spiderBookInfo(listItem, url.biqugeURL);
                 }
 
                 list.add(book);
@@ -68,7 +68,7 @@ public class GetBook {
                     book = getBookFromCache(bookLink);
                 } else {
                     biquge biquge = new biquge();
-                    book = biquge.spiderBookInfo(listItem, url.biqugeURL);
+//                    book = biquge.spiderBookInfo(listItem, url.biqugeURL);
                 }
 
                 list.add(book);
@@ -93,7 +93,7 @@ public class GetBook {
                     book = getBookFromCache(bookLink);
                 } else {
                     biquge biquge = new biquge();
-                    book = biquge.spiderBookInfo(listItem, url.biqugeURL);
+//                    book = biquge.spiderBookInfo(listItem, url.biqugeURL);
                 }
                 list.add(book);
             }
@@ -121,51 +121,4 @@ public class GetBook {
         return book;
     }
 
-//    public static BookInfo GetBookInfo(String url) {
-//        Document alldoc;
-//        String bookName = "";    //书名
-//        String author = "";  //作者
-//        String bookLink = "";    //书链接
-//        String picName = ""; //封面名字
-//        String picLink = ""; //封面链接
-//        String bookIntroduction = "";    //简介
-//        String lastTime = "";    //最后更新时间
-//        String newChapter = "";  //最新章节
-//        String newChapterLink = "";  //最新章节链接
-//        int chapterNum = 0; //总章节
-//        String linkFrom = "";    //书源
-//        String status = "";
-//        String category = "";
-//        try{
-//            alldoc = Jsoup.connect("https://www.biqugeu.net/"+url+"/").data("query", "Java").userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.108 Safari/537.36").get();
-//            bookName = alldoc.select("#info > h1").text().trim();
-//            author = alldoc.select("#info > p:nth-child(2)").text().trim().replace("作 者：","");
-//            lastTime = alldoc.select("#info > p:nth-child(4)").text().trim().replace("最后更新：","");
-//            newChapter = alldoc.select("#info > p:nth-child(5)").text().trim().replace("最新章节：","");
-//            newChapterLink=alldoc.select("#info > p:nth-child(5) > a").attr("href");
-//            bookIntroduction = alldoc.select("#intro").text().trim();
-//            picLink = alldoc.getElementsByTag("img").attr("src");
-//
-//            Elements listClass = alldoc.select("#list > dl > dd");
-//            int i=0;
-//            for(Element listitem:listClass) {
-//                listitem.getElementsByTag("a").attr("href");//获取书籍link
-//                i++;
-//            }
-//            if(i > 24) {
-//                chapterNum = i - 12;
-//            }else if(i<=24&&i>0) {
-//                chapterNum = i / 2;
-//            }else {
-//                chapterNum = 0;
-//            }
-//        }catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        BookInfo bookInfo = new BookInfo(bookName, author, bookLink,
-//                picLink, bookIntroduction,
-//                lastTime, newChapter, newChapterLink,
-//                chapterNum, status, category, linkFrom);
-//        return bookInfo;
-//    }
 }

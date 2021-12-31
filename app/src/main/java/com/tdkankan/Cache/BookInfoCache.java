@@ -13,8 +13,10 @@ import com.tdkankan.Reptile.GetBook;
 import com.tdkankan.SearchBook.biquge;
 import com.tdkankan.contains.url;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
@@ -44,15 +46,25 @@ public class BookInfoCache extends HashMap {
         try {
             //通过传入的图片地址，获取图片
             HttpURLConnection connection = (HttpURLConnection) (new URL(picLink).openConnection());
-            InputStream is = connection.getInputStream();
-            Bitmap bitmap = BitmapFactory.decodeStream(is);
+//            connection.setConnectTimeout(GlobalConfig.jsoupTimeOut);
+//            connection.setReadTimeout(GlobalConfig.jsoupTimeOut);
+            connection.setUseCaches(false);
+            connection.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
+            connection.setRequestMethod("POST");   //设置请求方式为POST
+
+            Bitmap bitmap = null;
+            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK){
+                InputStream is = connection.getInputStream();
+
+                bitmap = BitmapFactory.decodeStream(is);
+            }
             if (bitmap != null) {
                 Log.d("pic", "图片获取成功");
                 bitmap = BitmapUtils.compressImage(bitmap);//图片压缩
                 imageMap.put(picLink, bitmap);
             }
         } catch (IOException e) {
-//            e.printStackTrace();
+            e.printStackTrace();
         }
     }
 

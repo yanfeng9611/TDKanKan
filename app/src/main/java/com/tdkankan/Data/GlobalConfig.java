@@ -51,8 +51,8 @@ public class GlobalConfig {
     public static int chapternum=0; //书籍总章节
     public static Bitmap bitmapnull=null;
     public static final int threadPoolTimeOut = 100;  // 秒
-    public static final int jsoupTimeOut = 50000;  // 毫秒
-    public static final int threadPoolRandomSleep = 4000;  // 毫秒
+    public static final int jsoupTimeOut = 5000;  // 毫秒
+    public static final int threadPoolRandomSleep = 400;  // 毫秒
     //    public static int sysLight=0;//系统亮度
     public static ArrayList<ConcurrentHashMap<String, String>> list =new ArrayList<ConcurrentHashMap<String, String>>();
 

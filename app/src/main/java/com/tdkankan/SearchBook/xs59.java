@@ -3,6 +3,7 @@ package com.tdkankan.SearchBook;
 import com.tdkankan.Cache.BookInfoCache;
 import com.tdkankan.Data.BookInfo;
 import com.tdkankan.Data.GlobalConfig;
+import com.tdkankan.contains.url;
 import com.tdkankan.proxy.ProxyHost;
 import com.tdkankan.utils.MultiThreadSpider;
 
@@ -20,27 +21,62 @@ public class xs59 {
     public ArrayList searchBookEvent(String webURL, String searchURL, String keyWords) {
         Document alldoc;
         ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
-
+        String bookName = "";
+        String author = "";  //作者
+        String bookLink = "";    //书链接
+        String picName = ""; //封面名字
+        String picLink = ""; //封面链接
+        String bookIntroduction = "";    //简介
+        String lastTime = "";    //最后更新时间
+        String newChapter = "";  //最新章节
+        String newChapterLink = "";  //最新章节链接
+        int chapterNum = 0; //总章节
+        String linkFrom = "";    //书源
+        String status = "";
+        String category = "";
         try {
+
+            HashMap<String, String > book = null;
             Map<String, String> postParam = new HashMap<>();
             postParam.put("q", keyWords);
             alldoc = Jsoup.connect(searchURL).
                     data(postParam).
-                    proxy(ProxyHost.getProxyHost()).
+//                    proxy(ProxyHost.getProxyHost()).
                     userAgent(ProxyHost.getProxyAgent()).
-                    timeout(GlobalConfig.jsoupTimeOut).
+//                    timeout(GlobalConfig.jsoupTimeOut).
                     post();
             Elements elements = alldoc.getElementsByTag("dl");
+            for (Element item : elements) {
+                book = new HashMap<>();
+                bookLink = url.xs59URL + item.getElementsByTag("a").get(0).attr("href");
+                bookName = item.getElementsByTag("a").get(1).text().trim();
+                picLink = url.xs59URL + item.getElementsByTag("img").attr("src");
+                author = item.getElementsByTag("span").get(1).text().trim();
+                status = item.getElementsByTag("span").get(2).text().trim();
+                category = item.getElementsByTag("span").get(3).text().trim();
+                newChapter = item.getElementsByTag("a").get(4).text().trim();
+                newChapterLink = url.xs59URL + item.getElementsByTag("a").get(4).attr("href");
 
-            list = MultiThreadSpider.spiderBookInfo(elements, webURL, "xs59");
+                book.put("bookLink", bookLink);
+                book.put("bookName", bookName);
+                book.put("picLink", picLink);
+                book.put("author", author);
+                book.put("status", status);
+                book.put("category", category);
+                book.put("newChapter", newChapter);
+                book.put("newChapterLink", newChapterLink);
+                book.put("linkFrom", webURL);
+
+                list.add(book);
+            }
 
         }catch (Exception e) {
-//            e.printStackTrace();
+            e.printStackTrace();
         }
         return list;
     }
 
-    public HashMap spiderBookInfo(Element listItem, String webURL) {
+    public BookInfo spiderBookInfo(String bookURL) {
         String bookName = "";    //书名
         String author = "";  //作者
         String bookLink = "";    //书链接
@@ -56,27 +92,27 @@ public class xs59 {
         String category = "";
         HashMap<String, String> book = new HashMap<String, String>();
         try {
-            Thread.sleep(new Random().nextInt(GlobalConfig.threadPoolRandomSleep));
-
-            bookLink = listItem.getElementsByTag("dt").get(0).getElementsByTag("a").attr("href");
-            bookLink = webURL + bookLink;
-            bookName = listItem.getElementsByTag("dt").get(0).getElementsByTag("img").attr("alt");
-            author = listItem.getElementsByAttributeValue("class", "book_other").get(0).getElementsByTag("span").get(0).text().trim();
-            status = listItem.getElementsByAttributeValue("class", "book_other").get(0).getElementsByTag("span").get(1).text().trim();
-            newChapter = listItem.getElementsByAttributeValue("class", "book_other").get(1).getElementsByTag("a").get(0).text().trim();
-            newChapterLink = webURL + listItem.getElementsByAttributeValue("class", "book_other").get(1).getElementsByTag("a").attr("href");
-            picLink = listItem.getElementsByTag("dt").get(0).getElementsByTag("img").attr("src");
-            picLink = webURL + picLink;
-            category = listItem.getElementsByAttributeValue("class", "book_other").get(0).getElementsByTag("a").text().trim();
-            String infoLink = listItem.getElementsByAttributeValue("class", "book_des").get(0).getElementsByTag("a").attr("href");
-            Document doc = Jsoup.connect(webURL + infoLink).
-                    data("query", "Java").proxy(ProxyHost.getProxyHost()).
+            Document doc = Jsoup.connect(bookURL).
+//                    proxy(ProxyHost.getProxyHost()).
                     userAgent(ProxyHost.getProxyAgent()).
-                    timeout(GlobalConfig.jsoupTimeOut)
-                    .get();
-            bookIntroduction = doc.getElementsByAttributeValue("class", "desc desc-short").get(0).text().trim();
+//                    timeout(GlobalConfig.jsoupTimeOut).
+                    get();
+
+            bookName = doc.getElementsByTag("meta").get(8).attr("content");
+            bookIntroduction = doc.getElementsByTag("meta").get(9).attr("content");
+            picLink = url.xs59URL + doc.getElementsByTag("meta").get(10).attr("content");
+            category = doc.getElementsByTag("meta").get(11).attr("content");
+            author = doc.getElementsByTag("meta").get(12).attr("content");
+            bookLink = doc.getElementsByTag("meta").get(14).attr("content");
+            status = doc.getElementsByTag("meta").get(16).attr("content");
+            lastTime = doc.getElementsByTag("meta").get(17).attr("content");
+            newChapter = doc.getElementsByTag("meta").get(18).attr("content");
+            newChapterLink = doc.getElementsByTag("meta").get(19).attr("content");
+            linkFrom = url.xixiURL;
+            chapterNum = doc.getElementById("allChapter").getElementsByTag("li").size();
+
         } catch (Exception e) {
-//            e.printStackTrace();
+            e.printStackTrace();
         }
 
         // 缓存图片
@@ -90,21 +126,11 @@ public class xs59 {
 
         // 缓存图书
         BookInfo bookInfo = new BookInfo(bookName, author, bookLink,
-                picLink, bookIntroduction,
-                lastTime, newChapter, newChapterLink,
-                chapterNum, status, category, linkFrom);
-        GlobalConfig.bookmap.put(bookLink, bookInfo);
+                picLink, bookIntroduction, lastTime,
+                newChapter, newChapterLink, chapterNum,
+                linkFrom, status, category) ;
+        GlobalConfig.bookmap.put(bookURL, bookInfo);
 
-        book.put("bookName", bookName);
-        book.put("author", author);
-        book.put("bookLink", bookLink);
-        book.put("picLink", picLink);
-        book.put("bookIntroduction", bookIntroduction);
-        book.put("status", status);
-        book.put("category", category);
-        book.put("newChapter", newChapter);
-        book.put("newChapterLink", newChapterLink);
-        book.put("linkFrom", webURL);
-        return book;
+        return bookInfo;
     }
 }
