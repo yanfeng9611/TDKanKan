@@ -14,103 +14,151 @@ import org.greenrobot.greendao.annotation.Generated;
 @Entity
 public class Bookinfodb {
     @Id(autoincrement = true)
-    Long bookid;//数据库书籍id
+    Long bookID;//数据库书籍id
 
-    String name;    //书名
+    String bookName;    //书名
     String author;  //作者
-    String link;    //书链接
-    String piclink; //封面链接
-    String info;    //简介
-    String lasttime;    //最后更新时间
-    String newchapter;  //最新章节
-    String newchapterlink;  //最新章节链接
-    int chapternum; //总章节
-    String linkfrom;    //书源
-    @Generated(hash = 1233158695)
-    public Bookinfodb(Long bookid, String name, String author, String link,
-            String piclink, String info, String lasttime, String newchapter,
-            String newchapterlink, int chapternum, String linkfrom) {
-        this.bookid = bookid;
-        this.name = name;
-        this.author = author;
-        this.link = link;
-        this.piclink = piclink;
-        this.info = info;
-        this.lasttime = lasttime;
-        this.newchapter = newchapter;
-        this.newchapterlink = newchapterlink;
-        this.chapternum = chapternum;
-        this.linkfrom = linkfrom;
+    String bookLink;    //书链接
+    String picLink; //封面链接
+    String bookIntroduction;    //简介
+    String lastTime;    //最后更新时间
+    String newChapter;  //最新章节
+    String newChapterLink;  //最新章节链接
+    int chapterNum; //总章节
+    String linkFrom;    //书源
+    String status;    //书源
+    String category;    //书源
+
+    public String getBookName() {
+        return bookName;
     }
-    @Generated(hash = 61057257)
-    public Bookinfodb() {
+
+    public void setBookName(String bookName) {
+        this.bookName = bookName;
     }
-    public Long getBookid() {
-        return this.bookid;
-    }
-    public void setBookid(Long bookid) {
-        this.bookid = bookid;
-    }
-    public String getName() {
-        return this.name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
+
     public String getAuthor() {
-        return this.author;
+        return author;
     }
+
     public void setAuthor(String author) {
         this.author = author;
     }
-    public String getLink() {
-        return this.link;
+
+    public String getBookLink() {
+        return bookLink;
     }
-    public void setLink(String link) {
-        this.link = link;
+
+    public void setBookLink(String bookLink) {
+        this.bookLink = bookLink;
     }
-    public String getPiclink() {
-        return this.piclink;
+
+    public String getPicLink() {
+        return picLink;
     }
-    public void setPiclink(String piclink) {
-        this.piclink = piclink;
+
+    public void setPicLink(String picLink) {
+        this.picLink = picLink;
     }
-    public String getInfo() {
-        return this.info;
+
+    public String getBookIntroduction() {
+        return bookIntroduction;
     }
-    public void setInfo(String info) {
-        this.info = info;
+
+    public void setInfo(String bookIntroduction) {
+        this.bookIntroduction = bookIntroduction;
     }
-    public String getLasttime() {
-        return this.lasttime;
+
+    public String getLastTime() {
+        return lastTime;
     }
-    public void setLasttime(String lasttime) {
-        this.lasttime = lasttime;
+
+    public void setLastTime(String lastTime) {
+        this.lastTime = lastTime;
     }
-    public String getNewchapter() {
-        return this.newchapter;
+
+    public String getNewChapter() {
+        return newChapter;
     }
-    public void setNewchapter(String newchapter) {
-        this.newchapter = newchapter;
+
+    public void setNewChapter(String newChapter) {
+        this.newChapter = newChapter;
     }
-    public String getNewchapterlink() {
-        return this.newchapterlink;
+
+    public String getNewChapterLink() {
+        return newChapterLink;
     }
-    public void setNewchapterlink(String newchapterlink) {
-        this.newchapterlink = newchapterlink;
+
+    public void setNewChapterLink(String newChapterLink) {
+        this.newChapterLink = newChapterLink;
     }
-    public int getChapternum() {
-        return this.chapternum;
+
+    public int getChapterNum() {
+        return chapterNum;
     }
-    public void setChapternum(int chapternum) {
-        this.chapternum = chapternum;
+
+    public void setChapterNum(int chapterNum) {
+        this.chapterNum = chapterNum;
     }
-    public String getLinkfrom() {
-        return this.linkfrom;
+
+    public String getLinkFrom() {
+        return linkFrom;
     }
-    public void setLinkfrom(String linkfrom) {
-        this.linkfrom = linkfrom;
+
+    public void setLinkFrom(String linkFrom) {
+        this.linkFrom = linkFrom;
     }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+
+    @Generated(hash = 2044530104)
+    public Bookinfodb(Long bookID, String bookName, String author, String bookLink, String picLink,
+            String bookIntroduction, String lastTime, String newChapter, String newChapterLink,
+            int chapterNum, String linkFrom, String status, String category) {
+        this.bookID = bookID;
+        this.bookName = bookName;
+        this.author = author;
+        this.bookLink = bookLink;
+        this.picLink = picLink;
+        this.bookIntroduction = bookIntroduction;
+        this.lastTime = lastTime;
+        this.newChapter = newChapter;
+        this.newChapterLink = newChapterLink;
+        this.chapterNum = chapterNum;
+        this.linkFrom = linkFrom;
+        this.status = status;
+        this.category = category;
+    }
+
+    @Generated(hash = 61057257)
+    public Bookinfodb() {
+    }
+    public Long getBookID() {
+        return this.bookID;
+    }
+    public void setBookID(Long bookID) {
+        this.bookID = bookID;
+    }
+
+    public void setBookIntroduction(String bookIntroduction) {
+        this.bookIntroduction = bookIntroduction;
+    }
+
 
     
 }

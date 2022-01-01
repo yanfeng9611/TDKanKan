@@ -78,9 +78,9 @@ public class BookShelfAdapter extends BaseAdapter {
         } else {
             holder = (BookShelfAdapter.ViewHolder) convertView.getTag();
         }
-        String piclink=list.get(position * 3).getPiclink();
+        String piclink=list.get(position * 3).getPicLink();
         piclink= GlobalConfig.PicLinkCheck(piclink);
-        holder.bookItem1.setName(list.get(position * 3).getName());
+        holder.bookItem1.setName(list.get(position * 3).getBookName());
         ImageCacheManager.loadImage(piclink,holder.bookItem1.img_pic,getBitmapFromRes(activity,R.drawable.nonepic),getBitmapFromRes(activity,R.drawable.nonepic));
         if (position * 3 + 1 == list.size()) {
             holder.bookItem2.setVisibility(View.INVISIBLE);
@@ -96,9 +96,9 @@ public class BookShelfAdapter extends BaseAdapter {
             holder.bookItem2.setVisibility(View.VISIBLE);
             holder.bookItem2.setVisibility(View.VISIBLE);
             holder.bookItem2.setVisibility(View.VISIBLE);
-            String piclink2 = list.get(position * 3 + 1).getPiclink();
+            String piclink2 = list.get(position * 3 + 1).getPicLink();
             piclink2=GlobalConfig.PicLinkCheck(piclink2);
-            holder.bookItem2.setName(list.get(position * 3 + 1).getName());
+            holder.bookItem2.setName(list.get(position * 3 + 1).getBookName());
 //            holder.bookItem2.setPiclink(piclink2,GlobalConfig.bitmapnull,GlobalConfig.bitmapnull);
             ImageCacheManager.loadImage(piclink2,holder.bookItem2.img_pic,getBitmapFromRes(activity,R.drawable.nonepic),getBitmapFromRes(activity,R.drawable.nonepic));
 
@@ -113,9 +113,9 @@ public class BookShelfAdapter extends BaseAdapter {
             holder.bookItem3.setVisibility(View.VISIBLE);
             holder.bookItem3.setVisibility(View.VISIBLE);
             holder.bookItem3.setVisibility(View.VISIBLE);
-            String piclink3 = list.get(position * 3 + 2).getPiclink();
+            String piclink3 = list.get(position * 3 + 2).getPicLink();
             piclink3=GlobalConfig.PicLinkCheck(piclink3);
-            holder.bookItem3.setName(list.get(position * 3+2).getName());
+            holder.bookItem3.setName(list.get(position * 3+2).getBookName());
 //            holder.bookItem3.setPiclink(piclink3,GlobalConfig.bitmapnull,GlobalConfig.bitmapnull);
             ImageCacheManager.loadImage(piclink3,holder.bookItem3.img_pic,getBitmapFromRes(activity,R.drawable.nonepic),getBitmapFromRes(activity,R.drawable.nonepic));
 
@@ -145,8 +145,8 @@ public class BookShelfAdapter extends BaseAdapter {
         public void myItemClicked() {
             Log.d("clickposition",pos+"");
             Intent intent=new Intent(activity, ReadingActivity.class);
-            intent.putExtra("link",list.get(pos).getLink());
-            intent.putExtra("chapternum",list.get(pos).getChapternum());
+            intent.putExtra("link",list.get(pos).getBookLink());
+            intent.putExtra("chapternum",list.get(pos).getChapterNum());
             activity.startActivity(intent);
 
         }

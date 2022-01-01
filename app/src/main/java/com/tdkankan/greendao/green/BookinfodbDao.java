@@ -24,17 +24,19 @@ public class BookinfodbDao extends AbstractDao<Bookinfodb, Long> {
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property Bookid = new Property(0, Long.class, "bookid", true, "_id");
-        public final static Property Name = new Property(1, String.class, "name", false, "NAME");
+        public final static Property BookID = new Property(0, Long.class, "bookID", true, "_id");
+        public final static Property BookName = new Property(1, String.class, "bookName", false, "BOOK_NAME");
         public final static Property Author = new Property(2, String.class, "author", false, "AUTHOR");
-        public final static Property Link = new Property(3, String.class, "link", false, "LINK");
-        public final static Property Piclink = new Property(4, String.class, "piclink", false, "PICLINK");
-        public final static Property Info = new Property(5, String.class, "info", false, "INFO");
-        public final static Property Lasttime = new Property(6, String.class, "lasttime", false, "LASTTIME");
-        public final static Property Newchapter = new Property(7, String.class, "newchapter", false, "NEWCHAPTER");
-        public final static Property Newchapterlink = new Property(8, String.class, "newchapterlink", false, "NEWCHAPTERLINK");
-        public final static Property Chapternum = new Property(9, int.class, "chapternum", false, "CHAPTERNUM");
-        public final static Property Linkfrom = new Property(10, String.class, "linkfrom", false, "LINKFROM");
+        public final static Property BookLink = new Property(3, String.class, "bookLink", false, "BOOK_LINK");
+        public final static Property PicLink = new Property(4, String.class, "picLink", false, "PIC_LINK");
+        public final static Property BookIntroduction = new Property(5, String.class, "bookIntroduction", false, "BOOK_INTRODUCTION");
+        public final static Property LastTime = new Property(6, String.class, "lastTime", false, "LAST_TIME");
+        public final static Property NewChapter = new Property(7, String.class, "newChapter", false, "NEW_CHAPTER");
+        public final static Property NewChapterLink = new Property(8, String.class, "newChapterLink", false, "NEW_CHAPTER_LINK");
+        public final static Property ChapterNum = new Property(9, int.class, "chapterNum", false, "CHAPTER_NUM");
+        public final static Property LinkFrom = new Property(10, String.class, "linkFrom", false, "LINK_FROM");
+        public final static Property Status = new Property(11, String.class, "status", false, "STATUS");
+        public final static Property Category = new Property(12, String.class, "category", false, "CATEGORY");
     }
 
 
@@ -50,17 +52,19 @@ public class BookinfodbDao extends AbstractDao<Bookinfodb, Long> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"BOOKINFODB\" (" + //
-                "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: bookid
-                "\"NAME\" TEXT," + // 1: name
+                "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: bookID
+                "\"BOOK_NAME\" TEXT," + // 1: bookName
                 "\"AUTHOR\" TEXT," + // 2: author
-                "\"LINK\" TEXT," + // 3: link
-                "\"PICLINK\" TEXT," + // 4: piclink
-                "\"INFO\" TEXT," + // 5: info
-                "\"LASTTIME\" TEXT," + // 6: lasttime
-                "\"NEWCHAPTER\" TEXT," + // 7: newchapter
-                "\"NEWCHAPTERLINK\" TEXT," + // 8: newchapterlink
-                "\"CHAPTERNUM\" INTEGER NOT NULL ," + // 9: chapternum
-                "\"LINKFROM\" TEXT);"); // 10: linkfrom
+                "\"BOOK_LINK\" TEXT," + // 3: bookLink
+                "\"PIC_LINK\" TEXT," + // 4: picLink
+                "\"BOOK_INTRODUCTION\" TEXT," + // 5: bookIntroduction
+                "\"LAST_TIME\" TEXT," + // 6: lastTime
+                "\"NEW_CHAPTER\" TEXT," + // 7: newChapter
+                "\"NEW_CHAPTER_LINK\" TEXT," + // 8: newChapterLink
+                "\"CHAPTER_NUM\" INTEGER NOT NULL ," + // 9: chapterNum
+                "\"LINK_FROM\" TEXT," + // 10: linkFrom
+                "\"STATUS\" TEXT," + // 11: status
+                "\"CATEGORY\" TEXT);"); // 12: category
     }
 
     /** Drops the underlying database table. */
@@ -73,14 +77,14 @@ public class BookinfodbDao extends AbstractDao<Bookinfodb, Long> {
     protected final void bindValues(DatabaseStatement stmt, Bookinfodb entity) {
         stmt.clearBindings();
  
-        Long bookid = entity.getBookid();
-        if (bookid != null) {
-            stmt.bindLong(1, bookid);
+        Long bookID = entity.getBookID();
+        if (bookID != null) {
+            stmt.bindLong(1, bookID);
         }
  
-        String name = entity.getName();
-        if (name != null) {
-            stmt.bindString(2, name);
+        String bookName = entity.getBookName();
+        if (bookName != null) {
+            stmt.bindString(2, bookName);
         }
  
         String author = entity.getAuthor();
@@ -88,40 +92,50 @@ public class BookinfodbDao extends AbstractDao<Bookinfodb, Long> {
             stmt.bindString(3, author);
         }
  
-        String link = entity.getLink();
-        if (link != null) {
-            stmt.bindString(4, link);
+        String bookLink = entity.getBookLink();
+        if (bookLink != null) {
+            stmt.bindString(4, bookLink);
         }
  
-        String piclink = entity.getPiclink();
-        if (piclink != null) {
-            stmt.bindString(5, piclink);
+        String picLink = entity.getPicLink();
+        if (picLink != null) {
+            stmt.bindString(5, picLink);
         }
  
-        String info = entity.getInfo();
-        if (info != null) {
-            stmt.bindString(6, info);
+        String bookIntroduction = entity.getBookIntroduction();
+        if (bookIntroduction != null) {
+            stmt.bindString(6, bookIntroduction);
         }
  
-        String lasttime = entity.getLasttime();
-        if (lasttime != null) {
-            stmt.bindString(7, lasttime);
+        String lastTime = entity.getLastTime();
+        if (lastTime != null) {
+            stmt.bindString(7, lastTime);
         }
  
-        String newchapter = entity.getNewchapter();
-        if (newchapter != null) {
-            stmt.bindString(8, newchapter);
+        String newChapter = entity.getNewChapter();
+        if (newChapter != null) {
+            stmt.bindString(8, newChapter);
         }
  
-        String newchapterlink = entity.getNewchapterlink();
-        if (newchapterlink != null) {
-            stmt.bindString(9, newchapterlink);
+        String newChapterLink = entity.getNewChapterLink();
+        if (newChapterLink != null) {
+            stmt.bindString(9, newChapterLink);
         }
-        stmt.bindLong(10, entity.getChapternum());
+        stmt.bindLong(10, entity.getChapterNum());
  
-        String linkfrom = entity.getLinkfrom();
-        if (linkfrom != null) {
-            stmt.bindString(11, linkfrom);
+        String linkFrom = entity.getLinkFrom();
+        if (linkFrom != null) {
+            stmt.bindString(11, linkFrom);
+        }
+ 
+        String status = entity.getStatus();
+        if (status != null) {
+            stmt.bindString(12, status);
+        }
+ 
+        String category = entity.getCategory();
+        if (category != null) {
+            stmt.bindString(13, category);
         }
     }
 
@@ -129,14 +143,14 @@ public class BookinfodbDao extends AbstractDao<Bookinfodb, Long> {
     protected final void bindValues(SQLiteStatement stmt, Bookinfodb entity) {
         stmt.clearBindings();
  
-        Long bookid = entity.getBookid();
-        if (bookid != null) {
-            stmt.bindLong(1, bookid);
+        Long bookID = entity.getBookID();
+        if (bookID != null) {
+            stmt.bindLong(1, bookID);
         }
  
-        String name = entity.getName();
-        if (name != null) {
-            stmt.bindString(2, name);
+        String bookName = entity.getBookName();
+        if (bookName != null) {
+            stmt.bindString(2, bookName);
         }
  
         String author = entity.getAuthor();
@@ -144,40 +158,50 @@ public class BookinfodbDao extends AbstractDao<Bookinfodb, Long> {
             stmt.bindString(3, author);
         }
  
-        String link = entity.getLink();
-        if (link != null) {
-            stmt.bindString(4, link);
+        String bookLink = entity.getBookLink();
+        if (bookLink != null) {
+            stmt.bindString(4, bookLink);
         }
  
-        String piclink = entity.getPiclink();
-        if (piclink != null) {
-            stmt.bindString(5, piclink);
+        String picLink = entity.getPicLink();
+        if (picLink != null) {
+            stmt.bindString(5, picLink);
         }
  
-        String info = entity.getInfo();
-        if (info != null) {
-            stmt.bindString(6, info);
+        String bookIntroduction = entity.getBookIntroduction();
+        if (bookIntroduction != null) {
+            stmt.bindString(6, bookIntroduction);
         }
  
-        String lasttime = entity.getLasttime();
-        if (lasttime != null) {
-            stmt.bindString(7, lasttime);
+        String lastTime = entity.getLastTime();
+        if (lastTime != null) {
+            stmt.bindString(7, lastTime);
         }
  
-        String newchapter = entity.getNewchapter();
-        if (newchapter != null) {
-            stmt.bindString(8, newchapter);
+        String newChapter = entity.getNewChapter();
+        if (newChapter != null) {
+            stmt.bindString(8, newChapter);
         }
  
-        String newchapterlink = entity.getNewchapterlink();
-        if (newchapterlink != null) {
-            stmt.bindString(9, newchapterlink);
+        String newChapterLink = entity.getNewChapterLink();
+        if (newChapterLink != null) {
+            stmt.bindString(9, newChapterLink);
         }
-        stmt.bindLong(10, entity.getChapternum());
+        stmt.bindLong(10, entity.getChapterNum());
  
-        String linkfrom = entity.getLinkfrom();
-        if (linkfrom != null) {
-            stmt.bindString(11, linkfrom);
+        String linkFrom = entity.getLinkFrom();
+        if (linkFrom != null) {
+            stmt.bindString(11, linkFrom);
+        }
+ 
+        String status = entity.getStatus();
+        if (status != null) {
+            stmt.bindString(12, status);
+        }
+ 
+        String category = entity.getCategory();
+        if (category != null) {
+            stmt.bindString(13, category);
         }
     }
 
@@ -189,46 +213,50 @@ public class BookinfodbDao extends AbstractDao<Bookinfodb, Long> {
     @Override
     public Bookinfodb readEntity(Cursor cursor, int offset) {
         Bookinfodb entity = new Bookinfodb( //
-            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // bookid
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // name
+            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // bookID
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // bookName
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // author
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // link
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // piclink
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // info
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // lasttime
-            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // newchapter
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // newchapterlink
-            cursor.getInt(offset + 9), // chapternum
-            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10) // linkfrom
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // bookLink
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // picLink
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // bookIntroduction
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // lastTime
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // newChapter
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // newChapterLink
+            cursor.getInt(offset + 9), // chapterNum
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // linkFrom
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // status
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12) // category
         );
         return entity;
     }
      
     @Override
     public void readEntity(Cursor cursor, Bookinfodb entity, int offset) {
-        entity.setBookid(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setBookID(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
+        entity.setBookName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setAuthor(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setLink(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setPiclink(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setInfo(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setLasttime(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setNewchapter(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
-        entity.setNewchapterlink(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
-        entity.setChapternum(cursor.getInt(offset + 9));
-        entity.setLinkfrom(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setBookLink(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setPicLink(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setBookIntroduction(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setLastTime(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setNewChapter(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setNewChapterLink(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setChapterNum(cursor.getInt(offset + 9));
+        entity.setLinkFrom(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setStatus(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setCategory(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
      }
     
     @Override
     protected final Long updateKeyAfterInsert(Bookinfodb entity, long rowId) {
-        entity.setBookid(rowId);
+        entity.setBookID(rowId);
         return rowId;
     }
     
     @Override
     public Long getKey(Bookinfodb entity) {
         if(entity != null) {
-            return entity.getBookid();
+            return entity.getBookID();
         } else {
             return null;
         }
@@ -236,7 +264,7 @@ public class BookinfodbDao extends AbstractDao<Bookinfodb, Long> {
 
     @Override
     public boolean hasKey(Bookinfodb entity) {
-        return entity.getBookid() != null;
+        return entity.getBookID() != null;
     }
 
     @Override

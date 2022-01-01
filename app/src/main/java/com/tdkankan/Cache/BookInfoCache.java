@@ -10,8 +10,6 @@ import com.tdkankan.Data.BookInfo;
 import com.tdkankan.Data.GlobalConfig;
 import com.tdkankan.Data.Picture;
 import com.tdkankan.Reptile.GetBook;
-import com.tdkankan.SearchBook.biquge;
-import com.tdkankan.contains.url;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -33,10 +31,8 @@ public class BookInfoCache extends HashMap {
     private static ConcurrentHashMap<String, Bitmap> imageMap = new ConcurrentHashMap<>();
     public static Bitmap loadImage(String picLink) {
         if (imageMap.containsKey(picLink)) {
-            Log.d("picCacheGet", "图片缓存已存在:" + picLink);
             return imageMap.get(picLink);
         } else {
-//            Log.d("picCacheGet", "图片缓存不存在：" + picLink);
             initPicture(picLink);
             return imageMap.get(picLink);
         }
@@ -55,11 +51,9 @@ public class BookInfoCache extends HashMap {
             Bitmap bitmap = null;
             if (connection.getResponseCode() == HttpURLConnection.HTTP_OK){
                 InputStream is = connection.getInputStream();
-
                 bitmap = BitmapFactory.decodeStream(is);
             }
             if (bitmap != null) {
-                Log.d("pic", "图片获取成功");
                 bitmap = BitmapUtils.compressImage(bitmap);//图片压缩
                 imageMap.put(picLink, bitmap);
             }
@@ -71,15 +65,10 @@ public class BookInfoCache extends HashMap {
     public static BookInfo loadBook(String bookLink) {
         if (GlobalConfig.bookmap.containsKey(bookLink)) {
             BookInfo book = GlobalConfig.bookmap.get(bookLink);
-            Log.d("bookCacheGet", "图书缓存已存在:" + bookLink);
             return book;
         } else {
-            Log.d("bookCacheGet", "图书缓存不存在:" + bookLink);
-//            BookInfo book2 = GetBook.GetBookInfo(id);//爬虫爬取书本信息
-//            BookInfo book2 = new BookInfo(id, bookInfo);
-//            GlobalConfig.bookmap.put(id, book2);//书本信息存入hashmap缓存
-//            return book2;
-            return null;
+            BookInfo book = GetBook.getBookInfo(bookLink);//爬虫爬取书本信息
+            return book;
         }
     }
 

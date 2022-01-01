@@ -2,7 +2,6 @@ package com.tdkankan.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -19,11 +18,8 @@ import com.hb.dialog.dialog.LoadingDialog;
 import com.tdkankan.Cache.BookInfoCache;
 import com.tdkankan.Cache.ImageCacheManager;
 import com.tdkankan.Data.BookInfo;
-import com.tdkankan.Data.GlobalConfig;
 import com.tdkankan.R;
-import com.tdkankan.Reptile.GetBook;
 import com.tdkankan.greendao.DaoHelper;
-import com.tdkankan.greendao.green.DaoMaster;
 import com.tdkankan.greendao.model.Bookinfodb;
 
 /**
@@ -54,6 +50,8 @@ public class BookInfoDetailActivity extends AppCompatActivity {
     String newChapterLink;  //最新章节链接
     int chapterNum; //总章节
     String linkFrom;    //书源
+    String status;    // 状态
+    String category;    //类别
     BookInfo bookInfo;
     LoadingDialog loadingDialog;
     DaoHelper mDb;
@@ -74,7 +72,7 @@ public class BookInfoDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(BookInfoDetailActivity.this, ReadingActivity.class);
                 intent.putExtra("bookLink", bookLink);
-//                intent.putExtra("chapterNum",chapterNum);
+                intent.putExtra("chapterNum",chapterNum);
                 startActivity(intent);
             }
         });
@@ -99,7 +97,7 @@ public class BookInfoDetailActivity extends AppCompatActivity {
                 {//加入书架
                     Bookinfodb book=new Bookinfodb(null, bookName, author,
                             bookLink, picLink, bookIntroduction, lastTime, newChapter,
-                            "",chapterNum,"biquge");
+                            "",chapterNum,"biquge", status, category);
                     mDb.insertOrReplace(book);
                     if(mDb.search(bookLink)!=null)
                     {
@@ -108,7 +106,7 @@ public class BookInfoDetailActivity extends AppCompatActivity {
                     }
                 }else if(btn_add.getText().toString().equals("移出书架"))
                 {//移出书架
-                    mDb.delete(mDb.search(bookLink).getBookid());
+                    mDb.delete(mDb.search(bookLink).getBookID());
                     if(mDb.search(bookLink)==null)
                     {
                         btn_add.setText("加入书架");
@@ -118,38 +116,34 @@ public class BookInfoDetailActivity extends AppCompatActivity {
         });
     }
 
-    private  void GetData()
-    {
+    private  void GetData() {
         Intent intent = getIntent();
         bookName = intent.getStringExtra("bookName");
         bookIntroduction = intent.getStringExtra("bookIntroduction");
         bookLink = intent.getStringExtra("bookLink");
         author = intent.getStringExtra("author");
-        picName = intent.getStringExtra("picName");
         picLink = intent.getStringExtra("picLink");
-        newChapter = intent.getStringExtra("newChapter");
+//        newChapter = intent.getStringExtra("newChapter");
 //        lastTime = intent.getStringExtra("lastTime");
-//        chapterNum = Integer.parseInt(intent.getStringExtra("chapterNum"));
+//        chapterNum = intent.getIntExtra("chapterNum", 0);
 
-//        piclink = GlobalConfig.PicLinkCheck(piclink);
-//        preInitBookInfo(picName);
-//        newChapter = bookInfo.getNewChapter();
-//        lastTime = bookInfo.getLastTime();
-//        chapterNum=bookInfo.getChapterNum();
-        if(mDb.search(bookLink)!=null)
-        {
+        preInitBookInfo(bookLink);
+        newChapter = bookInfo.getNewChapter();
+        lastTime = bookInfo.getLastTime();
+        chapterNum = bookInfo.getChapterNum();
+        if(mDb.search(bookLink)!=null) {
             btn_add.setText("移出书架");
         }
     }
     private void initView() {
 
-//        Bitmap bitmap= BookInfoCache.loadImage(picname,piclink);
+        Bitmap bitmap= BookInfoCache.loadImage(picLink);
 
         tv_title.setText(bookName);
         tv_name.setText(bookName);
         tv_info.setText(bookIntroduction);
         tv_author.setText(author);
-//        img_pic.setImageBitmap(bitmap);
+        img_pic.setImageBitmap(bitmap);
         tv_lasttime.setText(lastTime);
         tv_newchapter.setText(newChapter);
     }
@@ -174,8 +168,7 @@ public class BookInfoDetailActivity extends AppCompatActivity {
     private void preInitBookInfo(String url) {
         bookInfo = BookInfoCache.loadBook(url);
     }
-    private class GetDataTask extends AsyncTask<Void,Integer,Boolean>
-    {
+    private class GetDataTask extends AsyncTask<Void,Integer,Boolean> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();

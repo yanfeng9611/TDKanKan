@@ -8,7 +8,6 @@ import com.tdkankan.greendao.green.DaoMaster;
 import com.tdkankan.greendao.green.DaoSession;
 import com.tdkankan.greendao.model.Bookinfodb;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -70,12 +69,12 @@ public class DaoHelper {
     //删除
     public void delete(Long bookid)
     {
-        bookinfodbDao.queryBuilder().where(BookinfodbDao.Properties.Bookid.eq(bookid)).buildDelete().executeDeleteWithoutDetachingEntities();
+        bookinfodbDao.queryBuilder().where(BookinfodbDao.Properties.BookID.eq(bookid)).buildDelete().executeDeleteWithoutDetachingEntities();
     }
     //更新
     public void update(Bookinfodb book)
     {
-        Bookinfodb old=bookinfodbDao.queryBuilder().where(BookinfodbDao.Properties.Bookid.eq(book.getBookid())).build().unique();
+        Bookinfodb old=bookinfodbDao.queryBuilder().where(BookinfodbDao.Properties.BookID.eq(book.getBookID())).build().unique();
         if(old!=null)
         {
             bookinfodbDao.update(book);
@@ -89,7 +88,7 @@ public class DaoHelper {
     }
     public Bookinfodb search(String link)
     {
-        Bookinfodb book=bookinfodbDao.queryBuilder().where(BookinfodbDao.Properties.Link.eq(link)).build().unique();
+        Bookinfodb book=bookinfodbDao.queryBuilder().where(BookinfodbDao.Properties.BookLink.eq(link)).build().unique();
         return book;
     }
 }

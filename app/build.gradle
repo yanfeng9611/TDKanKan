@@ -10,14 +10,14 @@ def buildTime() {
 }
 android {
     useLibrary  'org.apache.http.legacy'
-    compileSdkVersion 29
+    compileSdkVersion 31
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.tdkankan"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 31
         versionCode 7
-        versionName "1.0.5.1"
+        versionName "1.6.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

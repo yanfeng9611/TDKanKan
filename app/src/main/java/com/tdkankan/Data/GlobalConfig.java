@@ -110,25 +110,25 @@ public class GlobalConfig {
         PageTotal=sp.getInt("PageTotal",1);
         chapternow=sp.getInt("chapternow",0);
     }
-    public static String PicLinkCheck(String url)
+    public static String PicLinkCheck(String picLink)
     {
-        String url2=url.substring(0,2);
+        String url2 = picLink.substring(0,2);
         String url3="";
         String regEx="http.*";
         Pattern pattern= Pattern.compile(regEx);
-        Matcher matcher = pattern.matcher(url);
+        Matcher matcher = pattern.matcher(picLink);
         boolean rs = matcher.find();
         if(url2.equals("//"))
         {
-            url3="https:"+url;
+            url3="https:"+picLink;
             return url3;
         }else if(rs==true)
         {
-            return url;
+            return picLink;
         }
         else
         {
-            url3="https://www.biqugeu.net"+url;
+            url3="https://www.biqugeu.net"+picLink;
             return url3;
         }
     }

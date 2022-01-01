@@ -53,19 +53,19 @@ public class BookCityTopFragment extends Fragment {
         listView = (ListView)view.findViewById(R.id.listview_fengtui);
         listView2 = (ListView)view.findViewById(R.id.listview_qiangtui);
         loadingDialog= new LoadingDialog(BookCityTopFragment.this.getActivity());
-        new FengTuiTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        new QiangTuiTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+        //  后续添加图书分类界面，以及推荐界面
+//        new FengTuiTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+//        new QiangTuiTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         return view;
     }
 
-    public class FengTuiTask extends AsyncTask<Void,Integer,Boolean>
-    {
+    public class FengTuiTask extends AsyncTask<Void,Integer,Boolean> {
         @Override
         protected Boolean doInBackground(Void... voids) {
             try {
-                    list = GetBook.fengtui();
-            }catch (Exception e)
-            {
+                list = GetBook.fengtui();
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return true;
@@ -88,7 +88,7 @@ public class BookCityTopFragment extends Fragment {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    BookListAdapter2 adapter = new BookListAdapter2(list,BookCityTopFragment.this.getActivity());
+                    BookListAdapter2 adapter = new BookListAdapter2(list, BookCityTopFragment.this.getActivity());
                     listView.setAdapter(adapter);
                 }
             },DELAY_TIME);

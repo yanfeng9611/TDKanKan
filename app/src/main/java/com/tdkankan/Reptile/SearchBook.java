@@ -42,7 +42,6 @@ public class SearchBook {
         ArrayList<HashMap<String,String>> book;
         try {
             for (final List<String> webInfo : list) {
-                System.out.println(webInfo);
                 String className = "com.tdkankan.SearchBook." + webInfo.get(0);
                 Class clz = Class.forName(className);
                 Constructor constructor = clz.getConstructor();

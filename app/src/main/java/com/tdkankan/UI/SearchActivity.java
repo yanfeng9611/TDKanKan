@@ -3,14 +3,19 @@ package com.tdkankan.UI;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hb.dialog.dialog.LoadingDialog;
 import com.tdkankan.Adapter.SearchListAdapter;
@@ -36,15 +41,27 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
         getSupportActionBar().hide();
         listView = findViewById(R.id.listview_search);
-        editText=findViewById(R.id.edittext_search);
-        textView=findViewById(R.id.tv_search_btn);
-        tv_dearch_hinit=findViewById(R.id.tv_search_hinit);
+        editText = findViewById(R.id.edittext_search);
+        textView = findViewById(R.id.tv_search_btn);
+        tv_dearch_hinit = findViewById(R.id.tv_search_hinit);
         tv_dearch_hinit.setVisibility(View.GONE);
-        loadingDialog= new LoadingDialog(SearchActivity.this);
+        loadingDialog = new LoadingDialog(SearchActivity.this);
+
+        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    searchContent = editText.getText().toString();
+                    new SearchTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                }
+                return false;
+            }
+        });
+
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                searchContent=editText.getText().toString();
+                searchContent = editText.getText().toString();
                 new SearchTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         });
@@ -88,5 +105,4 @@ public class SearchActivity extends AppCompatActivity {
             },2000);
         }
     }
-
 }

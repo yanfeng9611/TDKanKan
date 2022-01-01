@@ -84,12 +84,9 @@ public class BookListAdapter2 extends BaseAdapter {
         }
 //        HashMap<String, String> map = list.get(count);
         //获取缓存的图片
-//        final String picname = list.get(position * 2).get("picname");
-//        final String picname2 = list.get(position * 2 + 1).get("picname");
-        String piclink=list.get(position * 2).get("piclink");
-        piclink= GlobalConfig.PicLinkCheck(piclink);
-        String piclink2 = list.get(position * 2 + 1).get("piclink");
-        piclink2=GlobalConfig.PicLinkCheck(piclink2);
+
+        String piclink = list.get(position * 2).get("picLink");
+        String piclink2 = list.get(position * 2 + 1).get("picLink");
 
 
         /*
@@ -113,9 +110,9 @@ public class BookListAdapter2 extends BaseAdapter {
 //        bitmap2= BookInfoCache.loadImage(picname2,piclink2);
 
 
-        holder.bookItem1.setName(list.get(position * 2).get("name"));
+        holder.bookItem1.setName(list.get(position * 2).get("bookName"));
         holder.bookItem1.setAuthor(list.get(position * 2).get("author"));
-        holder.bookItem1.setInfo(list.get(position * 2).get("info"));
+        holder.bookItem1.setInfo(list.get(position * 2).get("bookIntroduction"));
         holder.bookItem1.setPic(piclink,GlobalConfig.bitmapnull);
 //        holder.img.setText(list.get(count).get("name"));
 //            count++;
@@ -129,9 +126,9 @@ public class BookListAdapter2 extends BaseAdapter {
             holder.bookItem2.setVisibility(View.VISIBLE);
             holder.bookItem2.setVisibility(View.VISIBLE);
             holder.bookItem2.setVisibility(View.VISIBLE);
-            holder.bookItem2.setName(list.get(position * 2 + 1).get("name"));
+            holder.bookItem2.setName(list.get(position * 2 + 1).get("bookName"));
             holder.bookItem2.setAuthor(list.get(position * 2 + 1).get("author"));
-            holder.bookItem2.setInfo(list.get(position * 2 + 1).get("info"));
+            holder.bookItem2.setInfo(list.get(position * 2 + 1).get("bookIntroduction"));
             holder.bookItem2.setPic(piclink2,getBitmapFromRes(activity,R.drawable.nonepic));
         }
 
@@ -160,12 +157,11 @@ public class BookListAdapter2 extends BaseAdapter {
         public void myItemClicked() {
             Log.d("clickposition",pos+"");
             Intent intent=new Intent(activity, BookInfoDetailActivity.class);
-            intent.putExtra("name",list.get(pos).get("name"));
+            intent.putExtra("bookName",list.get(pos).get("bookName"));
             intent.putExtra("author",list.get(pos).get("author"));
-            intent.putExtra("info",list.get(pos).get("info"));
-            intent.putExtra("picname",list.get(pos).get("picname"));
-            intent.putExtra("link",list.get(pos).get("link"));
-            intent.putExtra("piclink",list.get(pos).get("piclink"));
+            intent.putExtra("bookIntroduction",list.get(pos).get("bookIntroduction"));
+            intent.putExtra("bookLink",list.get(pos).get("bookLink"));
+            intent.putExtra("picLink",list.get(pos).get("picLink"));
             activity.startActivity(intent);
 
         }
