@@ -4,7 +4,17 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/code/Android/TDKanKan/app/src/main/res/layout/activity_bookinfodetail.xml" value="0.121875" />
+        <entry key="..\:/code/Android/TDKanKan/app/src/main/res/layout/activity_bookshelf.xml" value="0.13385416666666666" />
+        <entry key="..\:/code/Android/TDKanKan/app/src/main/res/layout/activity_main.xml" value="0.1515625" />
+        <entry key="..\:/code/Android/TDKanKan/app/src/main/res/layout/activity_read.xml" value="0.3254861821903787" />
         <entry key="..\:/code/Android/TDKanKan/app/src/main/res/layout/activity_search.xml" value="0.1296875" />
+        <entry key="..\:/code/Android/TDKanKan/app/src/main/res/layout/bookitem.xml" value="0.14114583333333333" />
+        <entry key="..\:/code/Android/TDKanKan/app/src/main/res/layout/bookitem2.xml" value="0.13125" />
+        <entry key="..\:/code/Android/TDKanKan/app/src/main/res/layout/bookitem3.xml" value="0.14114583333333333" />
+        <entry key="..\:/code/Android/TDKanKan/app/src/main/res/layout/listview_bookitem.xml" value="0.14114583333333333" />
+        <entry key="..\:/code/Android/TDKanKan/app/src/main/res/layout/listview_bookshelf.xml" value="0.14114583333333333" />
+        <entry key="..\:/code/Android/TDKanKan/app/src/main/res/layout/listview_chapter_list.xml" value="0.14114583333333333" />
+        <entry key="..\:/code/Android/TDKanKan/app/src/main/res/layout/rigthandleft_textview.xml" value="0.14114583333333333" />
       </map>
     </option>
   </component>

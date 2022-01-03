@@ -39,8 +39,7 @@ public class BookContentCache {
      */
     private static void initCache(String url) {
         String content= GetAndRead.GetBookContent(url);
-        if(!content.isEmpty())
-        {
+        if(!content.isEmpty()) {
             cacheMap.put(url, content);
         }
 //        final String url2=url;

@@ -16,6 +16,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Xs59 {
     public ArrayList searchBookEvent(String webURL, String searchURL, String keyWords) {
@@ -134,5 +138,79 @@ public class Xs59 {
         GlobalConfig.bookmap.put(bookURL, bookInfo);
 
         return bookInfo;
+    }
+
+    public void getChapterList(String bookLink) {
+        Document doc;
+        ConcurrentHashMap<String,String > chapterMap = null;
+        try {
+            doc = Jsoup.connect(bookLink).
+                    userAgent(ProxyHost.getProxyAgent()).
+                    get();
+            Elements elements = doc.getElementById("allChapter").getElementsByTag("li");
+
+            for (Element item : elements) {
+                chapterMap = new ConcurrentHashMap<>();
+
+                String chapterLink = UrlConfig.xs59URL + item.getElementsByTag("a").attr("href");//获取章节link
+                String chapterTitle = item.getElementsByTag("a").get(0).getElementsByTag("span").text();//获取章节名
+                chapterMap.put("chapterLink", chapterLink);
+                chapterMap.put("chapterTitle", chapterTitle);
+                GlobalConfig.list.add(chapterMap);
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String getBookContent(String chapterUrl) {
+        Document doc;
+        String content = "";
+        String preStr;
+        String porStr;
+        try {
+            doc = Jsoup.connect(chapterUrl).
+                    userAgent(ProxyHost.getProxyAgent()).
+                    get();
+            Elements elements = doc.getElementsByAttributeValue("id", "BookText");
+            content = elements.toString();
+            while (content.contains("【")) {
+                preStr = content.substring(0, content.indexOf("【"));
+                porStr = content.substring(content.indexOf("】") + 1);
+                content = preStr + porStr;
+            }
+            content = content.replaceAll("本书源[^)]*阅读网", "").
+                    replaceAll("本部[^)]*阅读网", "").
+                    replace(".net", "").
+                    replace("(.com)", "").
+                    replace("（书迷楼）", "").
+                    replaceAll("书迷楼[^)]*书迷楼。", "").
+                    replace("热门推荐：", "");
+
+            content = content.replace("<div id=\"BookText\">", "").
+                    replace("</div>", "").
+                    replace("\uFEFF", "").
+                    replace("\n &nbsp;&nbsp;&nbsp;&nbsp;", "").
+                    replace(" &nbsp;&nbsp;&nbsp;&nbsp;\n", "").
+                    replace(" <br> \n", "").
+                    replace("<br>", "");
+            preStr = content.substring(0, content.indexOf("\n"));
+            Pattern pattern = Pattern.compile("第[0-9]*章");
+            Matcher matcher = pattern.matcher(preStr);
+            if (matcher.find()) {
+                content = content.substring(preStr.length() + 1);
+            }
+            content = content.
+                    replace(" ", "").
+                    replace("\n", "").
+                    replace("&nbsp;&nbsp;&nbsp;&nbsp;", "\n");
+
+            if (content.charAt(0) == '\n') {
+                content = content.substring(1);
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return content;
     }
 }

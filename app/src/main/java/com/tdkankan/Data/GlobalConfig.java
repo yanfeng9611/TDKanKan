@@ -36,7 +36,7 @@ public class GlobalConfig {
 //    public static Map<String,Book> bookmap=new HashMap<String,Book>();
     public static Map<String,BookInfo> bookmap = new ConcurrentHashMap<String,BookInfo>();
     public static CopyOnWriteArrayList<ArrayList<String>> proxyCacheList = new CopyOnWriteArrayList<ArrayList<String>>();
-    public static ConcurrentHashMap<Integer,String> contentMap=new ConcurrentHashMap();//页对应的内容
+    public static ConcurrentHashMap<Integer,String> contentMap = new ConcurrentHashMap();//页对应的内容
     public static int measuredWidth=0;//控件列宽度
     public static int measuredHeigtt=0;//控件高度
     public static int screenWidth=0; // 屏幕宽
@@ -47,14 +47,15 @@ public class GlobalConfig {
     public static int Page=0;//单章当前所在页
     public static int PageTotal=1;//单章总页数
     public static int mFontHeight = 0;// 绘制字体高度
-    public static String BookUrl="";//书籍链接
-    public static int chapternum=0; //书籍总章节
+    public static String BookUrl = "";//书籍链接
+    public static String LinkFrom = "";//书籍链接
+    public static int chapternum = 0; //书籍总章节
     public static Bitmap bitmapnull=null;
     public static final int threadPoolTimeOut = 100;  // 秒
     public static final int jsoupTimeOut = 5000;  // 毫秒
     public static final int threadPoolRandomSleep = 400;  // 毫秒
     //    public static int sysLight=0;//系统亮度
-    public static ArrayList<ConcurrentHashMap<String, String>> list =new ArrayList<ConcurrentHashMap<String, String>>();
+    public static CopyOnWriteArrayList<ConcurrentHashMap<String, String>> list =new CopyOnWriteArrayList<ConcurrentHashMap<String, String>>();
 
 //    public static Map<String,BookChapter> bookchapter=new HashMap<String,BookChapter>();
     public static List<Bookinfodb> booklist;
@@ -95,7 +96,12 @@ public class GlobalConfig {
     }
     public static void SaveReadSetting(Context context)
     {
-        SharedPreferences sp=context.getSharedPreferences(BookUrl.replace("/",""),MODE_PRIVATE);
+//        SharedPreferences sp = context.getSharedPreferences(BookUrl,MODE_PRIVATE);
+        SharedPreferences sp=context.getSharedPreferences(BookUrl.
+                replace("http://", "").
+                replace("https://", "").
+                replace("\\.", "").
+                replace("/",""), MODE_PRIVATE);
         SharedPreferences.Editor edit = sp.edit();
         edit.putInt("Page",Page);
         edit.putInt("PageTotal",PageTotal);
@@ -105,10 +111,15 @@ public class GlobalConfig {
 
     public static void GetReadSetting(Context context)
     {
-        SharedPreferences sp=context.getSharedPreferences(BookUrl.replace("/",""),MODE_PRIVATE);
-        Page=sp.getInt("Page",0);
-        PageTotal=sp.getInt("PageTotal",1);
-        chapternow=sp.getInt("chapternow",0);
+//        SharedPreferences sp = context.getSharedPreferences(BookUrl,MODE_PRIVATE);
+        SharedPreferences sp = context.getSharedPreferences(BookUrl.
+                replace("http://", "").
+                replace("https://", "").
+                replace("\\.", "").
+                replace("/",""), MODE_PRIVATE);
+        Page = sp.getInt("Page",0);
+        PageTotal = sp.getInt("PageTotal",1);
+        chapternow = sp.getInt("chapternow",0);
     }
     public static String PicLinkCheck(String picLink)
     {

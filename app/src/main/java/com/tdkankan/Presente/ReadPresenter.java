@@ -160,7 +160,6 @@ public class ReadPresenter implements BasePresente {
         }
 
         readingActivity.intStyle();
-
     }
 
     private class loadTask extends AsyncTask<Void,Integer,Boolean>
@@ -186,6 +185,8 @@ public class ReadPresenter implements BasePresente {
             listView.setSelection(GlobalConfig.chapternow - 5);
         }
     }
+
+    //  或去每章的内容，分段，分页
     public void LoadChapterContent()
     {//加载一个章节
         textPaint.setTextSize(ReadConfig.FontSize);
@@ -197,18 +198,18 @@ public class ReadPresenter implements BasePresente {
         GlobalConfig.contentMap.clear();
         try {
 //            content = getBook.GetBookContent(GlobalConfig.list.get(GlobalConfig.chapternow).get("link"));
-            content= BookContentCache.getCache(GlobalConfig.list.get(GlobalConfig.chapternow).get("link"));
+            content = BookContentCache.getCache(GlobalConfig.list.get(GlobalConfig.chapternow).get("chapterLink"));
         } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
 //            Toast.makeText(getApplicationContext(),"章节初始化失败",Toast.LENGTH_SHORT).show();
         }
-        content = getBook.splitContentFirst(content);//分段
+//        content = getBook.splitContentFirst(content);//分段
         content = getBook.splitcontentSecond(content, ReadConfig.FontSize, GlobalConfig.measuredWidth);//段落分行
+
         getBook.PageSet(content, GlobalConfig.mPageLineNum, GlobalConfig.contentMap);//章节分页并存入hashmap
-        try{
-            readingActivity.tv_title.setText(GlobalConfig.list.get(GlobalConfig.chapternow).get("title"));
-        }catch (Exception e)
-        {
+        try {
+            readingActivity.tv_title.setText(GlobalConfig.list.get(GlobalConfig.chapternow).get("chapterTitle"));
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

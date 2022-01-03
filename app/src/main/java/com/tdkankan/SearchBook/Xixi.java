@@ -24,7 +24,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class Xixi {
@@ -158,7 +161,7 @@ public class Xixi {
             doc = Jsoup.connect(bookLink).
 //                    proxy(ProxyHost.getProxyHost()).
                     userAgent(ProxyHost.getProxyAgent()).
-                    timeout(GlobalConfig.jsoupTimeOut).
+//                    timeout(GlobalConfig.jsoupTimeOut).
                     get();
             chapterNum = doc.getElementsByTag("dd").size();
 
@@ -182,5 +185,65 @@ public class Xixi {
                 linkFrom, status, category) ;
         GlobalConfig.bookmap.put(bookURL, bookInfo);
         return bookInfo;
+    }
+
+
+    public void getChapterList(String bookLink) {
+        Document doc;
+        ConcurrentHashMap<String,String > chapterMap = null;
+        try {
+            bookLink = bookLink.replace("books", "read");
+            doc = Jsoup.connect(bookLink).
+                    userAgent(ProxyHost.getProxyAgent()).
+                    get();
+            Elements elements = doc.getElementsByTag("dd");
+
+            for (Element item : elements) {
+                chapterMap = new ConcurrentHashMap<>();
+
+                String chapterLink = UrlConfig.xixiURL + item.getElementsByTag("a").attr("href");//获取章节link
+                String chapterTitle = item.getElementsByTag("a").text();//获取章节名
+                chapterMap.put("chapterLink", chapterLink);
+                chapterMap.put("chapterTitle", chapterTitle);
+                GlobalConfig.list.add(chapterMap);
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String getBookContent(String chapterUrl) {
+        Document doc;
+        String content = "";
+        String chapterText = "";
+        try {
+            while (true) {
+                doc = Jsoup.connect(chapterUrl).
+                        userAgent(ProxyHost.getProxyAgent()).
+                        get();
+                Elements elements = doc.getElementsByAttributeValue("id", "content");
+                content = elements.toString().
+                        replace("<div id=\"content\">", "").
+                        replace("</div>", "");
+                content = content.replace("<br>", "").replace("\n", "");
+                content = content.substring(" &nbsp;&nbsp;&nbsp;&nbsp;".length()).
+                        replace(" &nbsp;&nbsp;&nbsp;&nbsp;", "\n").
+                        replace("正文 \n", "").
+                        replace("&nbsp;", "").
+                        replace("\n()", "").
+                        replace("\n…", "").
+                        replace("…", "");
+                chapterText = chapterText + content;
+                Element item = doc.getElementsByAttributeValue("class", "bottem2").get(0);
+                if (item.toString().contains("下一页")) {
+                    chapterUrl = UrlConfig.xixiURL + item.getElementsByTag("a").get(2).attr("href");
+                } else {
+                    break;
+                }
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return chapterText;
     }
 }

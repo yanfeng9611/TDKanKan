@@ -60,8 +60,8 @@ public class BookShelfFragment extends Fragment {
         listView=(ListView)view.findViewById(R.id.listview_bookshelf);
         refreshP=(SwipeRefreshLayout)view.findViewById(R.id.bookshelf_refresh);
         mDb=DaoHelper.getInstance(context);
-        list=mDb.searchAll();
-        adapter=new BookShelfAdapter(list,BookShelfFragment.this.getActivity());
+        list = mDb.searchAll();
+        adapter=new BookShelfAdapter(list, BookShelfFragment.this.getActivity());
         listView.setAdapter(adapter);
 
     }
@@ -91,7 +91,7 @@ public class BookShelfFragment extends Fragment {
                 list.addAll(mDb.searchAll());
                 refreshP.setRefreshing(false);
             }
-        }, 1000);
+        }, 100);
         adapter.notifyDataSetChanged();
     }
     @Override

@@ -158,7 +158,4 @@ public class Bookinfodb {
     public void setBookIntroduction(String bookIntroduction) {
         this.bookIntroduction = bookIntroduction;
     }
-
-
-    
 }

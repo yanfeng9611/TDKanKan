@@ -99,14 +99,14 @@ public class FengTuiAdapter extends BaseAdapter {
 //        bitmap= BitmapUtils.readBitmapFromFileDescriptor("/data/data/com.tdkankan/temp/images/"+picname+".jpg",50,80);
 //        bitmap2=BitmapUtils.readBitmapFromFileDescriptor("/data/data/com.tdkankan/temp/images/"+picname2+".jpg",50,80);
 
-        String piclink=list.get(position*2).get("piclink");
-        piclink= GlobalConfig.PicLinkCheck(piclink);
-        String piclink2=list.get(position*2+1).get("piclink");
-        piclink2=GlobalConfig.PicLinkCheck(piclink2);
+        String piclink=list.get(position*2).get("picLink");
+//        piclink= GlobalConfig.PicLinkCheck(piclink);
+        String piclink2=list.get(position*2+1).get("picLink");
+//        piclink2=GlobalConfig.PicLinkCheck(piclink2);
 
-        holder.name.setText(list.get(position * 2).get("name"));
+        holder.name.setText(list.get(position * 2).get("bookName"));
         holder.author.setText(list.get(position * 2).get("author"));
-        holder.info.setText(list.get(position * 2).get("info"));
+        holder.info.setText(list.get(position * 2).get("bookIntroduction"));
 //        holder.img.setImageBitmap(bitmap);
         ImageCacheManager.loadImage(piclink,holder.img,getBitmapFromRes(activity,R.drawable.nonepic),getBitmapFromRes(activity,R.drawable.nonepic));
 //        holder.img.setText(list.get(count).get("name"));
@@ -121,9 +121,9 @@ public class FengTuiAdapter extends BaseAdapter {
             holder.author2.setVisibility(View.VISIBLE);
             holder.info2.setVisibility(View.VISIBLE);
             holder.img2.setVisibility(View.VISIBLE);
-            holder.name2.setText(list.get(position * 2 + 1).get("name"));
+            holder.name2.setText(list.get(position * 2 + 1).get("bookName"));
             holder.author2.setText(list.get(position * 2 + 1).get("author"));
-            holder.info2.setText(list.get(position * 2 + 1).get("info"));
+            holder.info2.setText(list.get(position * 2 + 1).get("bookIntroduction"));
 //            holder.img2.setImageBitmap(bitmap2);
             ImageCacheManager.loadImage(piclink2,holder.img2,getBitmapFromRes(activity,R.drawable.nonepic),getBitmapFromRes(activity,R.drawable.nonepic));
         }

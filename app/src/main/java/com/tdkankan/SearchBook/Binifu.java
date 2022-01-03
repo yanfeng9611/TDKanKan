@@ -1,10 +1,15 @@
 package com.tdkankan.SearchBook;
 
 
+import android.app.Activity;
+import android.text.TextPaint;
+
+import com.tdkankan.Cache.BookContentCache;
 import com.tdkankan.Cache.BookInfoCache;
 import com.tdkankan.Data.BookInfo;
 import com.tdkankan.Data.GlobalConfig;
 import com.tdkankan.Data.UrlConfig;
+import com.tdkankan.Reptile.GetAndRead;
 import com.tdkankan.proxy.ProxyHost;
 import com.tdkankan.utils.MultiThreadSpider;
 
@@ -13,25 +18,33 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class Binifu {
+    String bookName = "";    //书名
+    String author = "";  //作者
+    String bookLink = "";    //书链接
+    String picLink = ""; //封面链接
+    String bookIntroduction = "";    //简介
+    String lastTime = "";    //最后更新时间
+    String newChapter = "";  //最新章节
+    String newChapterLink = "";  //最新章节链接
+    int chapterNum = 0; //总章节
+    String linkFrom = "";    //书源
+    String status = "";
+    String category = "";
+
     public ArrayList searchBookEvent(String webURL, String searchURL, String keyWords) {
         Document alldoc;
         ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String, String>>();
-        String bookName = "";    //书名
-        String bookLink = "";    //书链接
-        String picLink = ""; //封面链接
-        String bookIntroduction = "";    //简介
-        String lastTime = "";    //最后更新时间
-        String newChapter = "";  //最新章节
-        String newChapterLink = "";  //最新章节链接
-        String status = "";
-        String category = "";
         HashMap<String,String> book;
         try {
 
@@ -89,19 +102,7 @@ public class Binifu {
     }
 
     public BookInfo spiderBookInfo(String bookURL) {
-        String bookName = "";    //书名
-        String author = "";  //作者
-        String bookLink = "";    //书链接
-        String picLink = ""; //封面链接
-        String bookIntroduction = "";    //简介
-        String lastTime = "";    //最后更新时间
-        String newChapter = "";  //最新章节
-        String newChapterLink = "";  //最新章节链接
-        int chapterNum = 0; //总章节
-        String linkFrom = "";    //书源
-        String status = "";
-        String category = "";
-        HashMap<String,String> book = new HashMap<String,String>();
+
         try {
             Document doc = Jsoup.connect(bookURL).
 //                    proxy(ProxyHost.getProxyHost()).
@@ -157,5 +158,61 @@ public class Binifu {
         GlobalConfig.bookmap.put(bookURL, bookInfo);
 
         return bookInfo;
+    }
+
+    public void getChapterList(String bookLink) {
+        Document doc;
+        ConcurrentHashMap<String,String > chapterMap = null;
+        try {
+            doc = Jsoup.connect(bookLink).
+                    userAgent(ProxyHost.getProxyAgent()).
+//                    timeout(5000).
+                    get();
+
+            String docStr = doc.toString();
+            String str = docStr.substring(docStr.indexOf("<div class=\"border-line\"></div>"));
+            int offset = "<div class=\"border-line\"></div>".length();
+            docStr = str.substring(offset);
+            String subStr = docStr.substring(docStr.indexOf("<div class=\"border-line\"></div>"), docStr.indexOf("<div class=\"pages\"></div>"));
+            doc = Jsoup.parse(subStr);
+
+            Elements elements = doc.getElementsByTag("li");
+            for (Element item : elements) {
+                chapterMap = new ConcurrentHashMap<>();
+
+                String chapterLink = UrlConfig.binifuURL + item.getElementsByTag("a").attr("href");//获取章节link
+                String chapterTitle = item.getElementsByTag("a").text();//获取章节名
+                chapterMap.put("chapterLink", chapterLink);
+                chapterMap.put("chapterTitle", chapterTitle);
+                GlobalConfig.list.add(chapterMap);
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String getBookContent(String url) {
+        Document doc;
+        String content="";
+        try {
+            doc = Jsoup.connect(url).
+                    userAgent(ProxyHost.getProxyAgent()).
+//                    timeout(5000).
+                    get();
+            Elements elements = doc.getElementById("content").getElementsByTag("p");
+            elements.remove(elements.size() - 1);
+            elements.remove(0);
+            elements.select("span").remove();
+            content = elements.toString().
+                    replace(" ", "").
+                    replace("<p>", "").
+                    replace("</p>", "").
+                    replaceAll("&[^)]*;", "").
+                    replaceAll("\\([^)]*\\)", "");
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return content;
     }
 }

@@ -35,6 +35,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="18dp"
                     android:orientation="horizontal">
+
                     <!--                               书名-->
                     <TextView
                         android:id="@+id/tv_bookitem_fengtui_name_2"
@@ -43,6 +44,7 @@
                         android:layout_weight="2"
                         android:textSize="15sp"
                         android:textStyle="bold" />
+
                 </LinearLayout>
                 <!--                            简介-->
                 <TextView
@@ -52,15 +54,29 @@
                     android:ellipsize="end"
                     android:textColor="@color/DarkGray"
                     android:textSize="12sp" />
-                <!--                               作者-->
-                <TextView
-                    android:id="@+id/tv_bookitem_fengtui_author_2"
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="18dp"
-                    android:gravity="right"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:textSize="13sp" />
+                    android:orientation="horizontal">
+                    <!--                               书名-->
+                    <TextView
+                        android:id="@+id/tv_bookitem_link_from"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                    <!--                               作者-->
+                    <TextView
+                        android:id="@+id/tv_bookitem_fengtui_author_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="18dp"
+                        android:gravity="right"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:textSize="13sp" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

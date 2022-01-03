@@ -3,6 +3,7 @@ package com.tdkankan.UI;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -28,6 +29,9 @@ import com.tdkankan.R;
 import com.tdkankan.Reptile.GetAndRead;
 import com.tdkankan.ViewUitl.BatteryView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * @author ZQZESS
  * @date 1/6/2021-7:06 PM
@@ -39,6 +43,7 @@ public class ReadingActivity extends AppCompatActivity {
     public TextView tv_title;
     public TextView tv_foot;
     public TextView tv_battery_valuel;
+    public TextView tv_time_value;
     public ImageView tv_read;
     public LinearLayout linearLayout;
     public LinearLayout layout_title;
@@ -88,14 +93,16 @@ public class ReadingActivity extends AppCompatActivity {
 //        intStyle();
 
         IntentFilter intentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-//注册接收器以获取电量信息
+        //注册接收器以获取电量信息
         registerReceiver(broadcastReceiver, intentFilter);
+
         linearLayout.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 Boolean isRight = event.getX() > (GlobalConfig.screenWidth / 3 * 2);
                 Boolean isLeft = event.getX() < (GlobalConfig.screenWidth / 3);
-                Boolean isCenter = event.getX() > (GlobalConfig.screenWidth / 3) && event.getX() < (GlobalConfig.screenWidth / 3 * 2);
+                @SuppressLint("ClickableViewAccessibility") Boolean isCenter = event.getX() > (GlobalConfig.screenWidth / 3) && event.getX() < (GlobalConfig.screenWidth / 3 * 2);
                 if (isRight) {
                     GlobalConfig.Page = GlobalConfig.Page + 1;
                     if (GlobalConfig.chapternow == GlobalConfig.list.size() - 1 && GlobalConfig.Page == GlobalConfig.PageTotal) {//本书最后一章最后一页
@@ -118,7 +125,7 @@ public class ReadingActivity extends AppCompatActivity {
 
                     Log.d("PageSet", "Page=" + GlobalConfig.Page + "Cahapter:" + GlobalConfig.chapternow);
                     bitmap2 = mReadPresenter.changePageContent(GlobalConfig.Page);
-                    GlobalConfig.SaveReadSetting(getApplicationContext());//保存阅读进度
+//                    GlobalConfig.SaveReadSetting(getApplicationContext());//保存阅读进度
                     tv_read.setImageBitmap(bitmap2);
                     try {
                         bitmap.recycle();
@@ -148,7 +155,7 @@ public class ReadingActivity extends AppCompatActivity {
                     }
                     Log.d("PageSet", "Page=" + GlobalConfig.Page + "Cahapter:" + GlobalConfig.chapternow);
                     bitmap = mReadPresenter.changePageContent(GlobalConfig.Page);
-                    GlobalConfig.SaveReadSetting(getApplicationContext());//保存阅读进度
+//                    GlobalConfig.SaveReadSetting(getApplicationContext());//保存阅读进度
                     tv_read.setImageBitmap(bitmap);
                     try {
                         bitmap2.recycle();
@@ -191,6 +198,7 @@ public class ReadingActivity extends AppCompatActivity {
         tv_foot = findViewById(R.id.tv_foot);
         tv_read = findViewById(R.id.tv_read);
         tv_battery_valuel = findViewById(R.id.tv_battery_value);
+        tv_time_value = findViewById(R.id.tv_time_value);
         linearLayout = findViewById(R.id.layout_read);
         layout_title = findViewById(R.id.layout_read_title);
         layout_foot = findViewById(R.id.layout_read_foot);
@@ -203,6 +211,7 @@ public class ReadingActivity extends AppCompatActivity {
 
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @SuppressLint("SetTextI18n")
         @Override
         public void onReceive(Context context, Intent intent) {
             //获取当前电量，如未获取具体数值，则默认为0
@@ -211,10 +220,16 @@ public class ReadingActivity extends AppCompatActivity {
             int batteryScale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, 100);
             //显示电量
             tv_battery_valuel.setText((batteryLevel * 100 / batteryScale) + " % ");
+            @SuppressLint("SimpleDateFormat")
+            SimpleDateFormat sdf = new SimpleDateFormat();// 格式化时间
+            sdf.applyPattern("HH:mm");// a为am/pm的标记
+            Date date = new Date();// 获取当前时间
+            // 设置时间
+            tv_time_value.setText(sdf.format(date));
         }
     };
 
-    public void initContent(String url, int chapternum) {
+    public void initContent(String url, String linkFrom) {
         //初始化数据
         GlobalConfig.measuredWidth = GlobalConfig.screenWidth;//控件列宽度
         GlobalConfig.measuredHeigtt = GlobalConfig.screenHeight;//控件高度
@@ -227,8 +242,11 @@ public class ReadingActivity extends AppCompatActivity {
         }
 
         GlobalConfig.GetReadSetting(getApplicationContext());//读取阅读进度
+        System.out.println("isDownload: " + ReadConfig.isDownload);
+        System.out.println("chapternow: " + GlobalConfig.chapternow);
         if (!ReadConfig.isDownload) {//isDownload默认未下载，isDownload==true返回false
-            GetAndRead.getChapter(url, chapternum);
+            GetAndRead.getChapter(url, linkFrom);
+            System.out.println("chapterlist: " + GlobalConfig.list);
             GetAndRead.ReadingBackground(GlobalConfig.chapternow);
         }
     }
@@ -249,10 +267,12 @@ public class ReadingActivity extends AppCompatActivity {
                 GlobalConfig.BookUrl = "";
             }
             Intent intent = getIntent();
-            GlobalConfig.BookUrl=intent.getStringExtra("link");
-            GlobalConfig.chapternum=intent.getIntExtra("chapternum",0);
+            GlobalConfig.BookUrl = intent.getStringExtra("bookLink");
+            GlobalConfig.LinkFrom = intent.getStringExtra("linkFrom");
+            System.out.println("来自书架的点击：" + GlobalConfig.BookUrl + "  " + GlobalConfig.LinkFrom);
+
             ReadConfig.ReadSetting(ReadingActivity.this);
-            initContent("https://www.biqugeu.net/"+GlobalConfig.BookUrl, GlobalConfig.chapternum);
+            initContent(GlobalConfig.BookUrl, GlobalConfig.LinkFrom);
             mReadPresenter = new ReadPresenter(ReadingActivity.this);
 //            if (!ReadConfig.isDark) {
 //                intChapterStyle(R.color.default_read_color, R.color.default_font_color);

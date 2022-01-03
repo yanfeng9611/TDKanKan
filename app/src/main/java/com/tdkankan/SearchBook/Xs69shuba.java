@@ -16,6 +16,10 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Xs69shuba {
     public ArrayList searchBookEvent(String webURL, String searchURL, String keyWords) {
@@ -124,5 +128,64 @@ public class Xs69shuba {
         GlobalConfig.bookmap.put(bookURL, bookInfo);
 
         return bookInfo;
+    }
+
+    public void getChapterList(String bookLink) {
+        Document doc;
+        ConcurrentHashMap<String,String > chapterMap = null;
+        try {
+            doc = Jsoup.connect(bookLink).
+                    userAgent(ProxyHost.getProxyAgent()).
+                    get();
+            Elements elements = doc.getElementsByAttributeValue("class", "chapterlist").get(1).getElementsByTag("a");
+
+            for (Element item : elements) {
+                chapterMap = new ConcurrentHashMap<>();
+
+                String chapterLink = bookLink + item.getElementsByTag("a").attr("href");//获取章节link
+                String chapterTitle = item.getElementsByTag("a").text();//获取章节名
+                chapterMap.put("chapterLink", chapterLink);
+                chapterMap.put("chapterTitle", chapterTitle);
+                GlobalConfig.list.add(chapterMap);
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String getBookContent(String chapterUrl) {
+        Document doc;
+        String content = "";
+        String preStr;
+        String porStr;
+        try {
+            doc = Jsoup.connect(chapterUrl).
+                    userAgent(ProxyHost.getProxyAgent()).
+                    get();
+            Elements elements = doc.getElementsByAttributeValue("id", "htmlContent");
+            content = elements.toString();
+            content = content.substring(content.indexOf(" <br>"), content.indexOf("</div>"));
+            content = content.
+                    replace(" <br>\n", "").
+                    replace(" <br> ", "").
+                    replace("&nbsp;&nbsp;&nbsp;&nbsp;", "");
+            preStr = content.substring(0, content.indexOf("\n"));
+
+            Pattern pattern = Pattern.compile("第[0-9]*章");
+            Matcher matcher = pattern.matcher(preStr);
+            if (matcher.find()) {
+                content = content.substring(preStr.length() + 1);
+            }
+
+            if (content.charAt(0) == '\n') {
+                content = content.substring(1);
+            }
+            while (content.charAt(content.length() - 1) == '\n') {
+                content = content.substring(0, content.length() - 1);
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return content;
     }
 }

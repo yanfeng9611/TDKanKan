@@ -91,6 +91,7 @@ public class SearchListAdapter extends BaseAdapter {
 
         holder.bookItem.setName(list.get(position).get("bookName"));
         holder.bookItem.setAuthor(list.get(position ).get("author"));
+        holder.bookItem.setLinkFrom(list.get(position ).get("linkFrom"));
         holder.bookItem.setInfo(list.get(position ).get("bookIntroduction"));
 //        holder.bookItem.setPic("http:"+piclink);
 

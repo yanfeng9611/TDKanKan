@@ -17,6 +17,8 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author ZQZESS
@@ -111,7 +113,6 @@ public class Biquge {
             chapterNum = doc.getElementsByTag("a").size();
 
         } catch (Exception e) {
-            System.out.println(doc);
             e.printStackTrace();
         }
 //        // 缓存图片
@@ -131,6 +132,56 @@ public class Biquge {
         GlobalConfig.bookmap.put(bookLink, bookInfo);
 
         return bookInfo;
+    }
+
+    public void getChapterList(String bookLink) {
+        Document doc;
+        ConcurrentHashMap<String,String > chapterMap = null;
+        try {
+            doc = Jsoup.connect(bookLink).
+                    userAgent(ProxyHost.getProxyAgent()).
+//                    timeout(5000).
+                    get();
+            String docStr = doc.toString();
+            String subStr = docStr.substring(docStr.indexOf("<center class=\"clear\">"), docStr.indexOf("<div class=\"footer\" id=\"footer\">"));
+            doc = Jsoup.parse(subStr);
+            Elements elements = doc.getElementsByTag("a");
+//
+            for (Element item : elements) {
+                chapterMap = new ConcurrentHashMap<>();
+
+                String chapterLink = bookLink + item.getElementsByTag("a").attr("href");//获取章节link
+                String chapterTitle = item.getElementsByTag("a").text();//获取章节名
+                chapterMap.put("chapterLink", chapterLink);
+                chapterMap.put("chapterTitle", chapterTitle);
+                GlobalConfig.list.add(chapterMap);
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String getBookContent(String chapterLink) {
+        Document doc;
+        String content="";
+        try {
+            doc = Jsoup.connect(chapterLink).
+                    userAgent(ProxyHost.getProxyAgent()).
+//                    timeout(5000).
+                    get();
+//            System.out.println(doc);
+            Elements elements = doc.getElementsByAttributeValue("name", "content");
+            content = elements.toString();
+            content = content.substring(content.indexOf("<br>"), content.indexOf("</div>"));
+            content = content.replace("<br>", "").replace("\n", "");
+            content = content.substring(" &nbsp;&nbsp;&nbsp;&nbsp;".length());
+            content = content.replace(" &nbsp;&nbsp;&nbsp;&nbsp;", "\n");
+            System.out.println(content);
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return content;
     }
 
 }

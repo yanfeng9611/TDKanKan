@@ -28,8 +28,11 @@ public class BookItemTypeTwo extends RelativeLayout {
     private TextView tv_name;// 书名
     private TextView tv_info;// 简介
     private TextView tv_author;// 作者
+
+    private TextView tv_linkFrom;// 作者
     public ImageView img_pic;//封面
 
+    private String linkFrom;
     private String name;
     private String info;
     private String author;
@@ -46,6 +49,7 @@ public class BookItemTypeTwo extends RelativeLayout {
         relativeLayout1 = (RelativeLayout) findViewById(R.id.relativeLayout2);
         tv_name=(TextView)findViewById(R.id.tv_bookitem_fengtui_name_2);
         tv_info=(TextView)findViewById(R.id.tv_bookitem_fengtui_info_2);
+        tv_linkFrom=(TextView)findViewById(R.id.tv_bookitem_link_from);
         tv_author=(TextView)findViewById(R.id.tv_bookitem_fengtui_author_2);
         img_pic=(ImageView)findViewById(R.id.img_bookitem_fengtui_2);
         relativeLayout1.setOnClickListener(new BookItemTypeTwo.MyOnClick());
@@ -58,6 +62,15 @@ public class BookItemTypeTwo extends RelativeLayout {
     public void setName(String name) {
         this.name = name;
         tv_name.setText(name);
+    }
+
+    public TextView getLinkFrom() {
+        return tv_linkFrom;
+    }
+
+    public void setLinkFrom(String linkFrom) {
+        this.linkFrom = linkFrom;
+        tv_linkFrom.setText(linkFrom);
     }
 
     public String getInfo() {

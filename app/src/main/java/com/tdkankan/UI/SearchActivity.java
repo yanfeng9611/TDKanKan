@@ -80,7 +80,7 @@ public class SearchActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... voids) {
 //            list= SearchBook.SearchBookEvent(searchContent);
-            list= SearchBook.searchBookEvent(searchContent);
+            list = SearchBook.searchBookEvent(searchContent);
             adapter = new SearchListAdapter(list,SearchActivity.this);
             return true;
         }

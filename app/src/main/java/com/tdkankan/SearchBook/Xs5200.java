@@ -15,6 +15,10 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Xs5200 {
     public ArrayList searchBookEvent(String webURL, String searchURL, String keyWords) {
@@ -129,5 +133,55 @@ public class Xs5200 {
         GlobalConfig.bookmap.put(bookURL, bookInfo);
 
         return bookInfo;
+    }
+
+    public void getChapterList(String bookLink) {
+        Document doc;
+        ConcurrentHashMap<String,String > chapterMap = null;
+        try {
+            doc = Jsoup.connect(bookLink).
+                    userAgent(ProxyHost.getProxyAgent()).
+                    get();
+            Elements elements = doc.getElementById("list").getElementsByTag("a");
+
+            for (Element item : elements) {
+                chapterMap = new ConcurrentHashMap<>();
+
+                String chapterLink = UrlConfig.xs5200URL + item.getElementsByTag("a").attr("href");//获取章节link
+                String chapterTitle = item.getElementsByTag("a").text();//获取章节名
+                chapterMap.put("chapterLink", chapterLink);
+                chapterMap.put("chapterTitle", chapterTitle);
+                GlobalConfig.list.add(chapterMap);
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String getBookContent(String chapterUrl) {
+        Document doc;
+        String content = "";
+        String preStr;
+        String porStr;
+        try {
+            doc = Jsoup.connect(chapterUrl).
+                    userAgent(ProxyHost.getProxyAgent()).
+                    get();
+            Elements elements = doc.getElementsByAttributeValue("id", "content");
+            content = elements.toString();
+            content = content.substring("<div id=\"content\">".length() + 1, content.indexOf("</div>"));
+            content = content.replace(" ", "").
+                    replace("<br>\n", "").
+                    replace("<br>", "").
+                    replace("&nbsp;&nbsp;&nbsp;&nbsp;", "");
+
+            while (content.charAt(content.length() - 1) == '\n') {
+                content = content.substring(0, content.length() - 1);
+            }
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return content;
     }
 }

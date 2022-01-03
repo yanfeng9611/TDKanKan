@@ -22,6 +22,7 @@ import com.tdkankan.UI.ReadingActivity;
 
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author ZQZESS
@@ -31,11 +32,11 @@ import java.util.concurrent.ConcurrentHashMap;
  * 不会停止运行的app不是好app w(ﾟДﾟ)w
  */
 public class ChapterAdapter extends BaseAdapter {
-    private ArrayList<ConcurrentHashMap<String, String>> list;
+    private CopyOnWriteArrayList<ConcurrentHashMap<String, String>> list;
     ReadingActivity activity;
     LoadingDialog loadingDialog;
 
-    public ChapterAdapter(ArrayList<ConcurrentHashMap<String, String>> list, ReadingActivity activity) {
+    public ChapterAdapter(CopyOnWriteArrayList<ConcurrentHashMap<String, String>> list, ReadingActivity activity) {
         this.list = list;
         this.activity = activity;
     }
@@ -67,7 +68,7 @@ public class ChapterAdapter extends BaseAdapter {
         {
             textView.setTextColor(activity.getResources().getColor(ReadConfig.fontColor));
         }
-        textView.setText(list.get(position).get("title"));
+        textView.setText(list.get(position).get("chapterTitle"));
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

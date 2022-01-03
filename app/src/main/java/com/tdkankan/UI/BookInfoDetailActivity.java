@@ -72,7 +72,7 @@ public class BookInfoDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(BookInfoDetailActivity.this, ReadingActivity.class);
                 intent.putExtra("bookLink", bookLink);
-                intent.putExtra("chapterNum",chapterNum);
+                intent.putExtra("linkFrom",linkFrom);
                 startActivity(intent);
             }
         });
@@ -97,7 +97,7 @@ public class BookInfoDetailActivity extends AppCompatActivity {
                 {//加入书架
                     Bookinfodb book=new Bookinfodb(null, bookName, author,
                             bookLink, picLink, bookIntroduction, lastTime, newChapter,
-                            "",chapterNum,"biquge", status, category);
+                            newChapterLink,chapterNum,linkFrom, status, category);
                     mDb.insertOrReplace(book);
                     if(mDb.search(bookLink)!=null)
                     {
@@ -127,11 +127,16 @@ public class BookInfoDetailActivity extends AppCompatActivity {
 //        lastTime = intent.getStringExtra("lastTime");
 //        chapterNum = intent.getIntExtra("chapterNum", 0);
 
+//        System.out.println("bookLink: " + bookLink);
         preInitBookInfo(bookLink);
+//        System.out.println("bookInfo: " + bookInfo);
         newChapter = bookInfo.getNewChapter();
+        newChapterLink = bookInfo.getNewChapterLink();
         lastTime = bookInfo.getLastTime();
         chapterNum = bookInfo.getChapterNum();
-        if(mDb.search(bookLink)!=null) {
+        linkFrom = bookInfo.getLinkFrom();
+        bookLink = bookInfo.getBookLink();
+        if(mDb.search(bookLink) != null) {
             btn_add.setText("移出书架");
         }
     }

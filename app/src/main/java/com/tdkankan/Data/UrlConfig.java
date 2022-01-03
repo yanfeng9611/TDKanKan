@@ -8,8 +8,8 @@ public class UrlConfig {
     public static final String binifuSearchURL = "http://www.binifu.com/search";
 
     public static final String biquge = "Biquge";
-    public static final String biqugeURL = "http://www.xbiquge.so";
-    public static final String biqugeSearchURL = "http://www.xbiquge.so/modules/article/search.php?searchkey=";
+    public static final String biqugeURL = "https://www.xbiquge.so";
+    public static final String biqugeSearchURL = "https://www.xbiquge.so/modules/article/search.php?searchkey=";
 
     public static final String xixi = "Xixi";
     public static final String xixiURL = "http://www.xixiwx.net";
